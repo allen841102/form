@@ -19,3 +19,11 @@ Route::get('/', function () {
     'name' => $name]);
 });
 
+
+Route::get('create', 'FormController@create');
+
+Route::post('form', 'FormController@store');
+
+Route::get('form/{id}', 'FormController@show')->name('form.show');
+
+Route::get('form', 'FormController@index');
