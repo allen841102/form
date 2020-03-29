@@ -12,7 +12,10 @@ class FormController extends Controller
   public function index()
   {
 
+      $forms = Form::all();
 
+
+      return view('list', ['list'=>$forms]);
   }
 
   public function create()
