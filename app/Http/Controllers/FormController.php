@@ -11,7 +11,7 @@ class FormController extends Controller
 
   public function index()
   {
-  	//TODO show list of respondent
+
 
   }
 
