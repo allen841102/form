@@ -28,3 +28,4 @@ Route::get('form/{id}', 'FormController@show')->name('form.show');
 
 Route::get('form', 'FormController@index');
 
+Route::get('json', 'FormController@format');
