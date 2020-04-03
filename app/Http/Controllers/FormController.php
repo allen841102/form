@@ -49,8 +49,6 @@ class FormController extends Controller
 
   public function format()
   {
-
-
     $result = [];
     $result[] = ['name' => 'Allen','age' => 24];
     $result[] = ['name' => 'Kevin','age' => 25];
