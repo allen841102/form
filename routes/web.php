@@ -32,4 +32,10 @@ Route::get('json', 'FormController@format');
 
 Auth::routes();
 
-Route::get('/dashboard', 'HomeController@index')->name('home');
+Route::get('admin/dashboard', 'HomeController@index')->name('dashboard');
+
+Route::get('admin/survey/create', 'SurveyController@create');
+
+Route::post('admin/survey/create', 'SurveyController@store');
+
+Route::get('admin/survey/{id}', 'SurveyController@show');
