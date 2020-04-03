@@ -12,3 +12,10 @@ npm-debug.log
 yarn-error.log
 .idea/*
 .DS_Store
+
+/public/css
+/public/fonts
+/public/images
+/public/js
+/public/*.json
+.php_cs.cache
