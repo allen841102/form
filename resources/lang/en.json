@@ -8,5 +8,6 @@
     "Remember Me": "記住登入資訊",
     "Forgot Your Password?": "忘記密碼?",
     "Reset Password": "重設密碼",
-    "Send Password Reset Link": "寄給我重設密碼連結"
+    "Send Password Reset Link": "寄給我重設密碼連結",
+    "Logout": "登出"
 }
