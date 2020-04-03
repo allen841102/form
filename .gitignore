@@ -17,4 +17,5 @@ yarn-error.log
 /public/fonts
 /public/images
 /public/js
+/public/*.json
 .php_cs.cache
