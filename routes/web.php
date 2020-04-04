@@ -34,8 +34,10 @@ Auth::routes();
 
 Route::get('admin/dashboard', 'HomeController@index')->name('dashboard');
 
-Route::get('admin/survey/create', 'SurveyController@create');
+Route::get('admin/survey/create', 'SurveyController@create')->name('survey.create');
 
 Route::post('admin/survey/create', 'SurveyController@store');
 
 Route::get('admin/survey/{id}', 'SurveyController@show');
+
+Route::get('admin/survey/edit/{id}', 'SurveyController@edit');

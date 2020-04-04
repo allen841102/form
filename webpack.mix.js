@@ -13,6 +13,6 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
-    .js('resources/admin-js/dashboard.js', 'public/admin-js');
+    .js('resources/admin-js/admin.js', 'public/admin-js');
 
 mix.copyDirectory('resources/images', 'public/images');

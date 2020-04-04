@@ -8,12 +8,16 @@
 require('./bootstrap');
 window.Vue = require('vue');
 
+Vue.component('survey-table', require('./components/SurveyTable.vue').default);
+Vue.component('side-bar', require('./components/SideBar.vue').default);
+Vue.component('nav-header', require('./components/NavHeader.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the body of the page. From here, you may begin adding components to
  * the application, or feel free to tweak this setup for your needs.
  */
-import App from './App.vue';
+//import App from './App.vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
@@ -21,5 +25,5 @@ Vue.use(ElementUI);
 
 const app = new Vue({
   el: '#app',
-  render: h => h(App),
+  //render: h => h(App),
 });
