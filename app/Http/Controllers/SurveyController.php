@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Answer;
+use App\Content;
+use App\Master;
+use App\Type;
 
 class SurveyController extends Controller
 {
@@ -23,7 +27,7 @@ class SurveyController extends Controller
      */
     public function create()
     {
-        //
+       return view('create');
     }
 
     /**
@@ -33,8 +37,11 @@ class SurveyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        return 'ok';
+    {   $fields = ['name'=> $request->input('name'),
+                   'start_text'=>$request->input('start_text'),
+                   'end_text'=>$request->input('end_text')];
+
+        $form = Master::create($fields);
     }
 
     /**
