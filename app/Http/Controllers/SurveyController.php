@@ -23,7 +23,7 @@ class SurveyController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.create');
     }
 
     /**
@@ -45,7 +45,7 @@ class SurveyController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('admin.show');
     }
 
     /**
@@ -56,7 +56,7 @@ class SurveyController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.edit');
     }
 
     /**

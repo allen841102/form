@@ -45,10 +45,13 @@
         </el-table-column>
         <el-table-column label="操作">
             <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                <a :href="scope.row.view_link"><el-button type="text" size="small">查看</el-button></a>
+
+                <a :href="scope.row.edit_link">
                 <el-button
                     size="mini"
                     @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                </a>
                 <el-button
                     size="mini"
                     type="danger"
@@ -59,6 +62,12 @@
 </template>
 <script>
     export default {
+        // props: {
+        //     surveyList: {
+        //         type: Array,
+        //         required: true,
+        //     }
+        // },
         data() {
             return {
                 tableData: [
@@ -71,6 +80,8 @@
                         'status': '開啟',
                         'response_count': 33,
                         'response_time': '2020-03-31 14:23:12',
+                        'view_link': '/admin/survey/1',
+                        'edit_link': '/admin/survey/edit/1'
                     },
                     {
                         'sequence': 2,
@@ -81,6 +92,8 @@
                         'status': '關閉',
                         'response_count': 123,
                         'response_time': '2020-02-28 14:23:12',
+                        'view_link': '/admin/survey/1',
+                        'edit_link': '/admin/survey/edit/1'
                     }
                 ],
             }

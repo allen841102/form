@@ -1,5 +1,6 @@
 <template>
     <el-aside width="240px" style="background-color: rgb(238, 241, 246)">
+        <div class="logo"><a :href="homePage"><span>後台首頁圖片 </span></a></div>
         <el-dropdown trigger="click">
             <div class="user-info">
                 <span>
@@ -19,11 +20,13 @@
         <el-menu :default-openeds="['1']">
             <el-submenu index="1">
                 <template slot="title"><i class="el-icon-menu"></i>問券總覽</template>
-                <el-menu-item index="1-1"><div class="first-letter">飲</div><span class="survey-name">飲食習慣研究</span></el-menu-item>
-                <el-menu-item index="1-2"><div class="first-letter">大</div><span class="survey-name">大學生打工調查</span></el-menu-item>
+                <a href="/admin/survey/1"><el-menu-item index="1-1"><div class="first-letter">飲</div><span class="survey-name">飲食習慣研究</span></el-menu-item></a>
+                <a href="/admin/survey/2"><el-menu-item index="1-2"><div class="first-letter">大</div><span class="survey-name">大學生打工調查</span></el-menu-item></a>
             </el-submenu>
             <el-menu-item index="2">
-                <template slot="title"><i class="el-icon-document-add"></i>新增問券</template>
+                <template slot="title">
+                    <a v-bind:href="creationLink"><i class="el-icon-document-add"></i>新增問券</a>
+                </template>
             </el-menu-item>
         </el-menu>
     </el-aside>
@@ -31,15 +34,30 @@
 
 <script>
     export default {
+        props: {
+            creationLink: {
+                type: String,
+                required: true
+            },
+            homePage: {
+                type: String,
+                required: true
+            }
+        },
         data() {
             return {
-            username: 'Allen'
+                username: 'Allen',
             }
         },
     }
 </script>
 
 <style>
+    .logo {
+        text-align: center;
+        padding: 10px 0 0 0;
+        font-size: 1.2em;
+    }
     .el-aside {
         color: #333;
     }
