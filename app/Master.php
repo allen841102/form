@@ -8,7 +8,7 @@ class Master extends Model
 {
     public function content()
     {
-        return $this->hasMany('APP\Content');
+        return $this->hasMany(Content::class);
     }
     protected $table = 'Master';
     public $timestamps = false;

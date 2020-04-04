@@ -15,4 +15,7 @@ class Answer extends Model
     {
         return $this->hasOne('APP\Type');
     }
+    protected $table = 'answer';
+    public $timestamps = false;
+    protected $guarded = [];
 }

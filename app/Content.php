@@ -15,4 +15,7 @@ class Content extends Model
     {
         return $this->hasMany('App\Answer');
     }
+    protected $table = 'content';
+    public $timestamps = false;
+    protected $guarded = [];
 }

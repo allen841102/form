@@ -41,7 +41,19 @@ class SurveyController extends Controller
                    'start_text'=>$request->input('start_text'),
                    'end_text'=>$request->input('end_text')];
 
-        $form = Master::create($fields);
+        $fields2 = [
+            'seq'=>1,
+            'title'=>'test',
+            'required'=>false,
+            'type_id'=>1];
+
+        $field3 = [
+            'text'=>'answer1',
+            'seq'=>1];
+
+        $master = Master::create($fields);
+        $content = $master->content()->create($fields2);
+        $answer = $content->answer()->create($field3);
     }
 
     /**
