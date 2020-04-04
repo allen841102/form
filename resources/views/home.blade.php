@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Example</title>
-</head>
-<body>
-<div id="app"></div>
+@extends('layouts.admin')
 
-<script src="{{ mix('admin-js/dashboard.js') }}"></script>
-</body>
-</html>
+@section('title', '管理介面')
 
+@section('content')
+    <survey-table></survey-table>
+@endsection
