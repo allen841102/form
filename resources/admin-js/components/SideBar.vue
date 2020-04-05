@@ -42,11 +42,10 @@
             homePage: {
                 type: String,
                 required: true
-            }
-        },
-        data() {
-            return {
-                username: 'Allen',
+            },
+            username:  {
+                type: String,
+                required: true
             }
         },
     }

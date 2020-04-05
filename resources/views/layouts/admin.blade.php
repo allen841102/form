@@ -13,9 +13,13 @@
 
 <div id="app">
     <el-container style="height: auto; border: 1px solid #eee">
-        <side-bar home-page="{{route('dashboard')}}" creation-link="{{ route('survey.create') }}"></side-bar>
+        <side-bar
+            home-page="{{route('dashboard')}}"
+            creation-link="{{ route('survey.create') }}"
+            username="Allen"
+        ></side-bar>
         <el-container direction="vertical">
-            <nav-header></nav-header>
+            <nav-header header-text="{{ $headerText ?? '歡迎來到 '. config('app.name') . ' 後台管理介面' }}"></nav-header>
             <el-main>
                 @yield('content')
             </el-main>
