@@ -8,6 +8,7 @@
 require('./bootstrap');
 window.Vue = require('vue');
 
+Vue.component('survey-creation', require('./components/SurveyCreation.vue').default);
 Vue.component('survey-table', require('./components/SurveyTable.vue').default);
 Vue.component('side-bar', require('./components/SideBar.vue').default);
 Vue.component('nav-header', require('./components/NavHeader.vue').default);
