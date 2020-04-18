@@ -6,7 +6,7 @@
         <el-table-column
             prop="sequence"
             label="#"
-            width="150">
+            width="50">
         </el-table-column>
         <el-table-column
             prop="title"
@@ -16,12 +16,12 @@
         <el-table-column
             prop="created_at"
             label="建立時間"
-            width="150">
+            width="160">
         </el-table-column>
         <el-table-column
             prop="updated_at"
             label="更新時間"
-            width="150">
+            width="160">
         </el-table-column>
         <el-table-column
             prop="question_count"
@@ -41,17 +41,20 @@
         <el-table-column
             prop="response_time"
             label="最後回覆時間"
-            width="150">
+            width="160">
         </el-table-column>
         <el-table-column label="操作">
             <template slot-scope="scope">
-                <a :href="scope.row.view_link"><el-button type="text" size="small">查看</el-button></a>
+                <a :href="scope.row.view_link">
+                    <el-button type="primary" size="small">查看</el-button>
+                </a>
 
                 <a :href="scope.row.edit_link">
                 <el-button
                     size="mini"
                     @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                 </a>
+
                 <el-button
                     size="mini"
                     type="danger"
@@ -62,40 +65,15 @@
 </template>
 <script>
     export default {
-        // props: {
-        //     surveyList: {
-        //         type: Array,
-        //         required: true,
-        //     }
-        // },
+        props: {
+            surveyList: {
+                type: String,
+                required: true,
+            }
+        },
         data() {
             return {
-                tableData: [
-                    {
-                        'sequence': 1,
-                        'title': '飲食習慣研究',
-                        'created_at': '2020-01-02 12:39:49',
-                        'updated_at': '2020-04-03 18:00:22',
-                        'question_count': 5,
-                        'status': '開啟',
-                        'response_count': 33,
-                        'response_time': '2020-03-31 14:23:12',
-                        'view_link': '/admin/survey/1',
-                        'edit_link': '/admin/survey/edit/1'
-                    },
-                    {
-                        'sequence': 2,
-                        'title': '大學生打工調查',
-                        'created_at': '2020-02-22 12:39:49',
-                        'updated_at': '2020-03-01 18:00:22',
-                        'question_count': 15,
-                        'status': '關閉',
-                        'response_count': 123,
-                        'response_time': '2020-02-28 14:23:12',
-                        'view_link': '/admin/survey/1',
-                        'edit_link': '/admin/survey/edit/1'
-                    }
-                ],
+                tableData: JSON.parse(this.surveyList),
             }
         },
         methods: {
