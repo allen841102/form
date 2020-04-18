@@ -24,6 +24,12 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $list = Master::with('Content')->get();
+        
+        $surveylist = [];
+
+
+
         return view('admin.home');
     }
 }
