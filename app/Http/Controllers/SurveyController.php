@@ -40,7 +40,8 @@ class SurveyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   $fields = ['name'=> $request->input('name'),
+    {
+        $fields = ['name'=> $request->input('name'),
                    'start_text'=>$request->input('start_text'),
                    'end_text'=>$request->input('end_text')];
 
