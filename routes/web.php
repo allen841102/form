@@ -32,3 +32,5 @@ Route::post('admin/survey/create', 'SurveyController@store');
 Route::get('admin/survey/{id}', 'SurveyController@show');
 
 Route::get('admin/survey/edit/{id}', 'SurveyController@edit');
+
+Route::put('admin/survey/{id}', 'SurveyController@update');
