@@ -39,7 +39,10 @@
 
                 <el-divider content-position="left">請從右方區域新增題目</el-divider>
 
-                <div v-for="(question, index) in questions" :key="index">
+                <draggable :list="questions">
+                    <transition-group type="transition" name="question-list">
+                        <div class="question-item"
+                        v-for="(question, index) in questions" :key="question.sequence">
                     <el-form-item :label=" '題目' + String(index+1) ">
                       <el-col :span="20">
                       <el-input class="question-input"
@@ -53,7 +56,7 @@
                           <el-tag type="warning">
                              {{ getTypeName(question.type)}}
                           </el-tag>
-                          <el-tag type="primary">
+                          <el-tag type="primary" class="sort-btn">
                               <i class="el-icon-rank">排序</i>
                           </el-tag>
                       <el-switch
@@ -79,6 +82,9 @@
                         </el-input>
                     </el-form-item>
                 </div>
+                    </transition-group>
+                </draggable>
+
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')">送出</el-button>
 <!--                    <el-button @click="resetForm('ruleForm')">Reset</el-button>-->
@@ -97,7 +103,11 @@
 </template>
 
 <script>
+    import draggable from 'vuedraggable';
     export default {
+        components: {
+            draggable
+        },
         data() {
             var validateTopic = (rule, value, callback) => {
                 if (value === '') {
@@ -136,6 +146,7 @@
                 },
                 questions: [
                     {
+                        sequence: 1,
                         title: "這是您第幾次來到本店用餐",
                         type: 1,
                         required: true,
@@ -147,6 +158,7 @@
                         ],
                     },
                     {
+                        sequence: 2,
                         title: "請選出您會推薦給朋友或家人的食物",
                         type: 2,
                         required: true,
@@ -159,6 +171,7 @@
                         ],
                     },
                     {
+                        sequence: 3,
                         title: "請留下任何建議",
                         type: 3,
                         required: false,
@@ -232,6 +245,13 @@
     .el-divider {
         margin-bottom: 30px;
         margin-top: 30px;
+    }
+    .question-item {
+        border-left: 5px groove rgba(28,110,164,0.21);
+        padding-left: 10px;
+    }
+    .sort-btn {
+        cursor: all-scroll;
     }
 </style>
 
