@@ -14,7 +14,7 @@
                 :rules="rules"
                 ref="ruleForm"
                 class="demo-ruleForm">
-                <el-form-item label="主題" prop="topic">
+                <el-form-item label="主題" prop="name">
                     <el-input type="text"
                               placeholder="某某某研究調查"
                               v-model="survey.name"
@@ -187,42 +187,65 @@
                     },
                 ],
                 survey: {},
+                isNew: true,
             }
        },
        created() {
-           let { topic, start_text, end_text, questions} = this.userSurvey || {}
-           this.survey = {topic: topic || '',
-                          start_text: start_text || '',
-                          end_text: end_text || '',
-                          questions: questions || []}
+           let { name  , start_text, end_text, questions} = this.userSurvey || {}
+           this.survey = { name: name || '',
+                           start_text: start_text || '',
+                           end_text: end_text || '',
+                           questions: questions || [] }
+           if(this.userSurvey) {
+               this.isNew = false
+           }
        },
        methods: {
             submitForm(formName) {
                 console.log(this.survey)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        //alert('submit!' + JSON.stringify(this.survey))
-                        axios.post('/admin/survey/create', this.survey)
-                             .then(function (response) {
-                                alert('儲存成功' + JSON.stringify(response.data))
-                             })
-                             .catch(function(error, reason) {
-                                 if(error.response) {
-                                     alert(JSON.stringify(error.response))
-                                 } else {
-                                     alert(error)
-                                 }
-                             })
+                        if(this.isNew) {
+                            this.createSurvey()
+                        } else {
+                            this.updateSurvey()
+                        }
                     } else {
                         console.log('error submit!!')
                         return false;
                     }
                 });
             },
-            resetForm(formName) {
-                this.$refs[formName].resetFields()
-            },
-            getTypeName(typeId) {
+            createSurvey() {
+               axios.post('/admin/survey/create', this.survey)
+                   .then(function (response) {
+                       alert('建立成功 ' + JSON.stringify(response.data))
+                   })
+                   .catch(function(error, reason) {
+                       if(error.response) {
+                           alert(JSON.stringify(error.response))
+                       } else {
+                           alert(error)
+                       }
+                   })
+           },
+           updateSurvey() {
+               axios.put('/admin/survey/'+this.userSurvey.id, this.survey)
+                   .then(function (response) {
+                       alert('更新成功 ' + JSON.stringify(response.data))
+                   })
+                   .catch(function(error, reason) {
+                       if(error.response) {
+                           alert(JSON.stringify(error.response))
+                       } else {
+                           alert(error)
+                       }
+                   })
+           },
+           resetForm(formName) {
+               this.$refs[formName].resetFields()
+           },
+           getTypeName(typeId) {
                 return this.questionOptions.find(item=> {
                     return typeId === item.type;
                 }).text;
