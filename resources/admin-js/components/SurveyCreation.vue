@@ -53,6 +53,9 @@
                           <el-tag type="warning">
                              {{ getTypeName(question.type)}}
                           </el-tag>
+                          <el-tag type="primary">
+                              <i class="el-icon-rank">排序</i>
+                          </el-tag>
                       <el-switch
                             v-model="question.required"
                             :active-text="question.required ? '必填':'選填'">
