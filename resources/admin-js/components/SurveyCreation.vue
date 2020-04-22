@@ -128,10 +128,16 @@
 <script>
     import draggable from 'vuedraggable';
     export default {
+        props: {
+            userSurvey: {
+                type: Object,
+                required: false,
+            }
+        },
         components: {
             draggable
         },
-        data() {
+       data() {
             var validateTopic = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('請輸入主題'))
@@ -180,42 +186,57 @@
                     },
                 ],
                 survey: {
-                    topic: '',
-                    startText: '',
-                    endText: '',
-                    questions: [
-                        {
-                            title: "這是您第幾次來到本店用餐",
-                            type: 1,
-                            required: true,
-                            answers: [
-                                '第 1 次',
-                                '第 2 次',
-                                '第 3 次',
-                                '超過 3 次',
-                            ],
-                        },
-                        {
-                            title: "請選出您會推薦給朋友或家人的食物",
-                            type: 2,
-                            required: true,
-                            answers: [
-                                '義大利麵',
-                                '披薩',
-                                '燴飯',
-                                '甜點',
-                                '飲料',
-                            ],
-                        },
-                        {
-                            title: "請留下任何建議",
-                            type: 3,
-                            required: false,
-                            answers: [],
-                        }
-                    ],
+
                 },
             }
+       },
+       created() {
+           if(this.userSurvey) {
+               //this.survey = this.userSurvey
+               this.survey = {
+                   topic: '大學生伙食調查',
+                   startText: '您好，這是一份學術研究，僅用於學術使用。針對 18~22 歲的大學生，調查日常三餐的來源與費用。',
+                   endText: '謝謝您的協助',
+                   questions: [
+                       {
+                           title: "這是您第幾次來到本店用餐",
+                           type: 1,
+                           required: true,
+                           answers: [
+                               '第 1 次',
+                               '第 2 次',
+                               '第 3 次',
+                               '超過 3 次',
+                           ],
+                       },
+                       {
+                           title: "請選出您會推薦給朋友或家人的食物",
+                           type: 2,
+                           required: true,
+                           answers: [
+                               '義大利麵',
+                               '披薩',
+                               '燴飯',
+                               '甜點',
+                               '飲料',
+                           ],
+                       },
+                       {
+                           title: "請留下任何建議",
+                           type: 3,
+                           required: false,
+                           answers: [],
+                       }
+                   ],
+               }
+           } else {
+              this.survey = {
+                  topic: '',
+                  startText: '',
+                  endText: '',
+                  questions: [],
+              }
+           }
        },
        methods: {
             submitForm(formName) {
