@@ -39,10 +39,12 @@
 
                 <el-divider content-position="left">題目設定</el-divider>
 
-                <draggable :list="questions">
+                <draggable :list="questions"
+                           group="question-list"
+                >
                     <transition-group type="transition" name="question-list">
                         <div class="question-item"
-                        v-for="(question, index) in questions" :key="question.sequence">
+                        v-for="(question, index) in questions" :key="index+1">
 
                     <el-form-item :label=" '題目' + String(index+1) ">
                             <el-input class="question-input"
@@ -59,7 +61,10 @@
                             <el-tag type="primary" class="sort-btn margin-bot">
                                 <i class="el-icon-rank">排序</i>
                             </el-tag>
-                            <el-switch class="margin-bot"
+                          <el-button size="small" type="danger" class="margin-bot" @click="removeQuesiton(index)">
+                              <i class="el-icon-delete">刪除</i>
+                          </el-button>
+                          <el-switch class="margin-bot"
                                 v-model="question.required"
                                 :active-text="question.required ? '必填':'選填'">
                             </el-switch>
@@ -67,7 +72,7 @@
                     <el-form-item v-if="question.type !== 3"
                                   v-for="(answer, seq) in question.answers"
                                   :key="seq">
-                        <el-col span="20">
+                        <el-col :span="20">
                             <el-input type="text"
                                   v-model="question.answers[seq]"
                                   placeholder="請輸入內容"
@@ -75,9 +80,9 @@
                                 <template slot="prepend">答案 {{ seq+1 }}</template>
                             </el-input>
                         </el-col>
-                        <el-col span="4" style="text-align: left">
-                            <i class="el-icon-plus answer-ctrl"></i>
-                            <i class="el-icon-minus answer-ctrl"></i>
+                        <el-col :span="4" style="text-align: left">
+                            <i class="el-icon-plus answer-ctrl" @click="addAnswer(question.answers)"></i>
+                            <i class="el-icon-minus answer-ctrl" @click="removeAnswer(question.answers, seq)" v-show="question.answers.length > 1"></i>
                         </el-col>
                     </el-form-item>
 
@@ -90,10 +95,11 @@
                     </transition-group>
                 </draggable>
 
-                <el-form-item>
+                <el-form-item v-show="this.questions.length > 0">
                     <el-button type="primary" @click="submitForm('ruleForm')">送出</el-button>
 <!--                    <el-button @click="resetForm('ruleForm')">Reset</el-button>-->
                 </el-form-item>
+                <span v-show="this.questions.length===0" class="empty-question-area"> 請加入題目 </span>
             </el-form>
            </el-col>
         </div>
@@ -104,8 +110,8 @@
             <draggable
                 class="dragArea list-group"
                 :list="questionOptions"
-                :group="{ name: 'people', pull: 'clone', put: false }"
-                :clone="cloneDog"
+                :group="{ name: 'question-list', pull: 'clone', put: false }"
+                :clone="cloneQuestion"
             >
                 <el-button
                     class="question-option"
@@ -179,7 +185,6 @@
                 ],
                 questions: [
                     {
-                        sequence: 1,
                         title: "這是您第幾次來到本店用餐",
                         type: 1,
                         required: true,
@@ -191,7 +196,6 @@
                         ],
                     },
                     {
-                        sequence: 2,
                         title: "請選出您會推薦給朋友或家人的食物",
                         type: 2,
                         required: true,
@@ -204,7 +208,6 @@
                         ],
                     },
                     {
-                        sequence: 3,
                         title: "請留下任何建議",
                         type: 3,
                         required: false,
@@ -219,15 +222,15 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        alert('submit!')
                     } else {
-                        console.log('error submit!!');
+                        console.log('error submit!!')
                         return false;
                     }
                 });
             },
             resetForm(formName) {
-                this.$refs[formName].resetFields();
+                this.$refs[formName].resetFields()
             },
             getTypeName(typeId) {
                 return this.questionOptions.find(item=> {
@@ -238,6 +241,31 @@
                 return this.questionOptions.find(item=> {
                     return typeId === item.type;
                 }).icon;
+            },
+            cloneQuestion(questionOption) {
+                console.log(this.questions)
+                 let newQuestion = {
+                    title: "",
+                   type: questionOption.type,
+                    required: false,
+                    answers: [
+                        ''
+                    ],
+                }
+                if (this.questions.length === 0) {
+                    this.questions = [newQuestion]
+                    return
+                }
+                return newQuestion
+            },
+            removeQuesiton(index) {
+                this.questions.splice(index, 1)
+            },
+            addAnswer(answers) {
+                answers.push('')
+            },
+            removeAnswer(answers, index) {
+                answers.splice(index, 1)
             }
         }
     }
@@ -283,7 +311,7 @@
     .question-item {
         border-left: 5px groove rgba(28,110,164,0.21);
         padding-left: 10px;
-        min-height: 180px;
+        min-height: 210px;
         margin-bottom: 10px;
     }
     .sort-btn {
@@ -311,6 +339,11 @@
     .answer-ctrl {
        cursor: pointer;
        margin-left: 5px;
+    }
+    .empty-question-area {
+        padding: 100px 200px 100px 200px;
+        border: 1px dotted;
+        display: block;
     }
 </style>
 
