@@ -7,7 +7,7 @@
            <el-col :span="22">
                <el-divider content-position="left">基本設定</el-divider>
             <el-form
-                :model="ruleForm"
+                :model="survey"
                 label-position="left"
                 label-width="120px"
                 status-icon
@@ -17,7 +17,7 @@
                 <el-form-item label="主題" prop="topic">
                     <el-input type="text"
                               placeholder="某某某研究調查"
-                              v-model="ruleForm.topic"
+                              v-model="survey.topic"
                               maxlength="50"
                               show-word-limit
                               clearable></el-input>
@@ -27,24 +27,24 @@
                               placeholder="您好，請協助我們了解這次服務的品質，以做為改進的參考。同時我們也將在月底抽出 10 位得獎者，寄發 8 折優惠券。"
                               maxlength="255"
                               show-word-limit
-                              v-model="ruleForm.startText"></el-input>
+                              v-model="survey.startText"></el-input>
                 </el-form-item>
                 <el-form-item label="Thank you 訊息" prop="endText">
                     <el-input type="textarea"
                               placeholder="完成，謝謝您的寶貴回饋。祝您有愉快的一天。"
                               maxlength="255"
                               show-word-limit
-                              v-model="ruleForm.endText"></el-input>
+                              v-model="survey.endText"></el-input>
                 </el-form-item>
 
                 <el-divider content-position="left">題目設定</el-divider>
 
-                <draggable :list="questions"
+                <draggable :list="survey.questions"
                            group="question-list"
                 >
                     <transition-group type="transition" name="question-list">
                         <div class="question-item"
-                        v-for="(question, index) in questions" :key="index+1">
+                        v-for="(question, index) in survey.questions" :key="index+1">
 
                     <el-form-item :label=" '題目' + String(index+1) ">
                             <el-input class="question-input"
@@ -95,11 +95,11 @@
                     </transition-group>
                 </draggable>
 
-                <el-form-item v-show="this.questions.length > 0">
+                <el-form-item v-show="survey.questions.length > 0">
                     <el-button type="primary" @click="submitForm('ruleForm')">送出</el-button>
 <!--                    <el-button @click="resetForm('ruleForm')">Reset</el-button>-->
                 </el-form-item>
-                <span v-show="this.questions.length===0" class="empty-question-area"> 請加入題目 </span>
+                <span v-show="survey.questions.length===0" class="empty-question-area"> 請加入題目 </span>
             </el-form>
            </el-col>
         </div>
@@ -116,6 +116,7 @@
                 <el-button
                     class="question-option"
                     v-for="option in questionOptions"
+                    :key="option.type"
                     :icon="option.icon">{{option.text}}</el-button>
             </draggable>
         </div>
@@ -150,32 +151,27 @@
                 callback()
             };
             return {
-                ruleForm: {
-                    topic: '',
-                    startText: '',
-                    endText: ''
-                },
                 rules: {
                     topic: [
-                        { validator: validateTopic, trigger: 'blur' }
+                        {validator: validateTopic, trigger: 'blur'}
                     ],
                     startText: [
-                        { validator: validateStartText, trigger: 'blur' }
+                        {validator: validateStartText, trigger: 'blur'}
                     ],
                     endText: [
-                        { validator: validateEndText, trigger: 'blur' }
+                        {validator: validateEndText, trigger: 'blur'}
                     ]
                 },
                 questionOptions: [
                     {
-                       type: 1,
-                       icon: 'el-icon-question',
-                       text: "單選",
+                        type: 1,
+                        icon: 'el-icon-question',
+                        text: "單選",
                     },
                     {
-                       type: 2,
-                       icon: 'el-icon-check',
-                       text: "多選",
+                        type: 2,
+                        icon: 'el-icon-check',
+                        text: "多選",
                     },
                     {
                         type: 3,
@@ -183,46 +179,50 @@
                         text: "簡答"
                     },
                 ],
-                questions: [
-                    {
-                        title: "這是您第幾次來到本店用餐",
-                        type: 1,
-                        required: true,
-                        answers:[
-                            '第 1 次',
-                            '第 2 次',
-                            '第 3 次',
-                            '超過 3 次',
-                        ],
-                    },
-                    {
-                        title: "請選出您會推薦給朋友或家人的食物",
-                        type: 2,
-                        required: true,
-                        answers: [
-                           '義大利麵',
-                           '披薩',
-                           '燴飯',
-                           '甜點',
-                           '飲料',
-                        ],
-                    },
-                    {
-                        title: "請留下任何建議",
-                        type: 3,
-                        required: false,
-                        answers:[
-
-                        ],
-                    }
-                ],
-            };
-        },
-        methods: {
+                survey: {
+                    topic: '',
+                    startText: '',
+                    endText: '',
+                    questions: [
+                        {
+                            title: "這是您第幾次來到本店用餐",
+                            type: 1,
+                            required: true,
+                            answers: [
+                                '第 1 次',
+                                '第 2 次',
+                                '第 3 次',
+                                '超過 3 次',
+                            ],
+                        },
+                        {
+                            title: "請選出您會推薦給朋友或家人的食物",
+                            type: 2,
+                            required: true,
+                            answers: [
+                                '義大利麵',
+                                '披薩',
+                                '燴飯',
+                                '甜點',
+                                '飲料',
+                            ],
+                        },
+                        {
+                            title: "請留下任何建議",
+                            type: 3,
+                            required: false,
+                            answers: [],
+                        }
+                    ],
+                },
+            }
+       },
+       methods: {
             submitForm(formName) {
+                console.log(this.survey)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!')
+                        alert('submit!' + JSON.stringify(this.survey))
                     } else {
                         console.log('error submit!!')
                         return false;
@@ -243,7 +243,6 @@
                 }).icon;
             },
             cloneQuestion(questionOption) {
-                console.log(this.questions)
                  let newQuestion = {
                     title: "",
                    type: questionOption.type,
@@ -252,14 +251,14 @@
                         ''
                     ],
                 }
-                if (this.questions.length === 0) {
-                    this.questions = [newQuestion]
+                if (this.survey.questions.length === 0) {
+                    this.survey.questions = [newQuestion]
                     return
                 }
                 return newQuestion
             },
             removeQuesiton(index) {
-                this.questions.splice(index, 1)
+                this.survey.questions.splice(index, 1)
             },
             addAnswer(answers) {
                 answers.push('')
