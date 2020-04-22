@@ -67,12 +67,18 @@
                     <el-form-item v-if="question.type !== 3"
                                   v-for="(answer, seq) in question.answers"
                                   :key="seq">
-                        <el-input type="text"
+                        <el-col span="20">
+                            <el-input type="text"
                                   v-model="question.answers[seq]"
                                   placeholder="請輸入內容"
                                   clearable>
-                            <template slot="prepend">答案 {{ seq+1 }}</template>
-                        </el-input>
+                                <template slot="prepend">答案 {{ seq+1 }}</template>
+                            </el-input>
+                        </el-col>
+                        <el-col span="4" style="text-align: left">
+                            <i class="el-icon-plus answer-ctrl"></i>
+                            <i class="el-icon-minus answer-ctrl"></i>
+                        </el-col>
                     </el-form-item>
 
                     <el-form-item v-if="question.type==3" >
@@ -301,6 +307,10 @@
     }
     .margin-bot {
         margin-bottom: 10px;
+    }
+    .answer-ctrl {
+       cursor: pointer;
+       margin-left: 5px;
     }
 </style>
 
