@@ -17,7 +17,7 @@
                 <el-form-item label="主題" prop="topic">
                     <el-input type="text"
                               placeholder="某某某研究調查"
-                              v-model="survey.topic"
+                              v-model="survey.name"
                               maxlength="50"
                               show-word-limit
                               clearable></el-input>
@@ -27,14 +27,14 @@
                               placeholder="您好，請協助我們了解這次服務的品質，以做為改進的參考。同時我們也將在月底抽出 10 位得獎者，寄發 8 折優惠券。"
                               maxlength="255"
                               show-word-limit
-                              v-model="survey.startText"></el-input>
+                              v-model="survey.start_text"></el-input>
                 </el-form-item>
                 <el-form-item label="Thank you 訊息" prop="endText">
                     <el-input type="textarea"
                               placeholder="完成，謝謝您的寶貴回饋。祝您有愉快的一天。"
                               maxlength="255"
                               show-word-limit
-                              v-model="survey.endText"></el-input>
+                              v-model="survey.end_text"></el-input>
                 </el-form-item>
 
                 <el-divider content-position="left">題目設定</el-divider>
@@ -61,7 +61,7 @@
                             <el-tag type="primary" class="sort-btn margin-bot">
                                 <i class="el-icon-rank">排序</i>
                             </el-tag>
-                          <el-button size="small" type="danger" class="margin-bot" @click="removeQuesiton(index)">
+                          <el-button size="small" type="danger" class="margin-bot" @click="removeQuestion(index)">
                               <i class="el-icon-delete">刪除</i>
                           </el-button>
                           <el-switch class="margin-bot"
@@ -127,6 +127,7 @@
 
 <script>
     import draggable from 'vuedraggable';
+    import axios from 'axios';
     export default {
         props: {
             userSurvey: {
@@ -158,13 +159,13 @@
             };
             return {
                 rules: {
-                    topic: [
+                    name: [
                         {validator: validateTopic, trigger: 'blur'}
                     ],
-                    startText: [
+                    start_text: [
                         {validator: validateStartText, trigger: 'blur'}
                     ],
-                    endText: [
+                    end_text: [
                         {validator: validateEndText, trigger: 'blur'}
                     ]
                 },
@@ -185,65 +186,33 @@
                         text: "簡答"
                     },
                 ],
-                survey: {
-
-                },
+                survey: {},
             }
        },
        created() {
-           if(this.userSurvey) {
-               //this.survey = this.userSurvey
-               this.survey = {
-                   topic: '大學生伙食調查',
-                   startText: '您好，這是一份學術研究，僅用於學術使用。針對 18~22 歲的大學生，調查日常三餐的來源與費用。',
-                   endText: '謝謝您的協助',
-                   questions: [
-                       {
-                           title: "這是您第幾次來到本店用餐",
-                           type: 1,
-                           required: true,
-                           answers: [
-                               '第 1 次',
-                               '第 2 次',
-                               '第 3 次',
-                               '超過 3 次',
-                           ],
-                       },
-                       {
-                           title: "請選出您會推薦給朋友或家人的食物",
-                           type: 2,
-                           required: true,
-                           answers: [
-                               '義大利麵',
-                               '披薩',
-                               '燴飯',
-                               '甜點',
-                               '飲料',
-                           ],
-                       },
-                       {
-                           title: "請留下任何建議",
-                           type: 3,
-                           required: false,
-                           answers: [],
-                       }
-                   ],
-               }
-           } else {
-              this.survey = {
-                  topic: '',
-                  startText: '',
-                  endText: '',
-                  questions: [],
-              }
-           }
+           let { topic, start_text, end_text, questions} = this.userSurvey || {}
+           this.survey = {topic: topic || '',
+                          start_text: start_text || '',
+                          end_text: end_text || '',
+                          questions: questions || []}
        },
        methods: {
             submitForm(formName) {
                 console.log(this.survey)
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!' + JSON.stringify(this.survey))
+                        //alert('submit!' + JSON.stringify(this.survey))
+                        axios.post('/admin/survey/create', this.survey)
+                             .then(function (response) {
+                                alert('儲存成功' + JSON.stringify(response.data))
+                             })
+                             .catch(function(error, reason) {
+                                 if(error.response) {
+                                     alert(JSON.stringify(error.response))
+                                 } else {
+                                     alert(error)
+                                 }
+                             })
                     } else {
                         console.log('error submit!!')
                         return false;
@@ -278,7 +247,7 @@
                 }
                 return newQuestion
             },
-            removeQuesiton(index) {
+            removeQuestion(index) {
                 this.survey.questions.splice(index, 1)
             },
             addAnswer(answers) {

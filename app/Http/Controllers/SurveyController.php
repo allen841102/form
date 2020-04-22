@@ -41,6 +41,7 @@ class SurveyController extends Controller
      */
     public function store(Request $request)
     {
+        return response()->json($request->toArray(), 200);
         $fields = ['name'=> $request->input('name'),
                    'start_text'=>$request->input('start_text'),
                    'end_text'=>$request->input('end_text')];
