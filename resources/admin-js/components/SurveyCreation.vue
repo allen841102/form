@@ -1,11 +1,11 @@
 <template>
 <div>
     <el-row>
-    <el-col :span="18">
+    <el-col :span="18" class="right-border">
         <div class="grid-content">
-            <el-divider content-position="left">基本設定</el-divider>
             <div style="margin: 20px;"></div>
            <el-col :span="22">
+               <el-divider content-position="left">基本設定</el-divider>
             <el-form
                 :model="ruleForm"
                 label-position="left"
@@ -37,34 +37,33 @@
                               v-model="ruleForm.endText"></el-input>
                 </el-form-item>
 
-                <el-divider content-position="left">請從右方區域新增題目</el-divider>
+                <el-divider content-position="left">題目設定</el-divider>
 
                 <draggable :list="questions">
                     <transition-group type="transition" name="question-list">
                         <div class="question-item"
                         v-for="(question, index) in questions" :key="question.sequence">
+
                     <el-form-item :label=" '題目' + String(index+1) ">
-                      <el-col :span="20">
-                      <el-input class="question-input"
+                            <el-input class="question-input"
                                 type="text"
                                 placeholder="標題"
                                 v-model="question.title"
                                 clearable>
-                      </el-input>
-                      </el-col>
-                      <el-col :span="3" style="margin-left: 20px;">
-                          <el-tag type="warning">
-                             {{ getTypeName(question.type)}}
-                          </el-tag>
-                          <el-tag type="primary" class="sort-btn">
-                              <i class="el-icon-rank">排序</i>
-                          </el-tag>
-                      <el-switch
-                            v-model="question.required"
-                            :active-text="question.required ? '必填':'選填'">
-                      </el-switch>
-                      </el-col>
+                            </el-input>
                     </el-form-item>
+                      <div class="question-setting">
+                            <el-tag type="warning" class="margin-bot" :class="getClassName(question.type)">
+                                {{ getTypeName(question.type)}}
+                            </el-tag>
+                            <el-tag type="primary" class="sort-btn margin-bot">
+                                <i class="el-icon-rank">排序</i>
+                            </el-tag>
+                            <el-switch class="margin-bot"
+                                v-model="question.required"
+                                :active-text="question.required ? '必填':'選填'">
+                            </el-switch>
+                        </div>
                     <el-form-item v-if="question.type !== 3"
                                   v-for="(answer, seq) in question.answers"
                                   :key="seq">
@@ -94,8 +93,19 @@
         </div>
     </el-col>
     <el-col :span="6">
-        <div class="grid-content bg-purple-light">
-            題目類型區域
+        <div class="grid-content">
+            新增題目類型，拖曳至左方題目設定
+            <draggable
+                class="dragArea list-group"
+                :list="questionOptions"
+                :group="{ name: 'people', pull: 'clone', put: false }"
+                :clone="cloneDog"
+            >
+                <el-button
+                    class="question-option"
+                    v-for="option in questionOptions"
+                    :icon="option.icon">{{option.text}}</el-button>
+            </draggable>
         </div>
     </el-col>
     </el-row>
@@ -144,6 +154,23 @@
                         { validator: validateEndText, trigger: 'blur' }
                     ]
                 },
+                questionOptions: [
+                    {
+                       type: 1,
+                       icon: 'el-icon-question',
+                       text: "單選",
+                    },
+                    {
+                       type: 2,
+                       icon: 'el-icon-check',
+                       text: "多選",
+                    },
+                    {
+                        type: 3,
+                        icon: 'el-icon-edit',
+                        text: "簡答"
+                    },
+                ],
                 questions: [
                     {
                         sequence: 1,
@@ -197,14 +224,14 @@
                 this.$refs[formName].resetFields();
             },
             getTypeName(typeId) {
-                if(typeId === 1) {
-                    return '單選';
-                } else if(typeId === 2) {
-                    return '多選';
-                } else if(typeId === 3) {
-                    return '簡答';
-                }
-                return ''
+                return this.questionOptions.find(item=> {
+                    return typeId === item.type;
+                }).text;
+            },
+            getClassName(typeId) {
+                return this.questionOptions.find(item=> {
+                    return typeId === item.type;
+                }).icon;
             }
         }
     }
@@ -237,6 +264,7 @@
     .grid-content {
         border-radius: 4px;
         min-height: 36px;
+        text-align: center;
     }
     .row-bg {
         padding: 10px 0;
@@ -249,9 +277,30 @@
     .question-item {
         border-left: 5px groove rgba(28,110,164,0.21);
         padding-left: 10px;
+        min-height: 180px;
+        margin-bottom: 10px;
     }
     .sort-btn {
         cursor: all-scroll;
+    }
+    .question-option {
+        border: 1px dotted;
+        display: block;
+        margin: 10px;
+    }
+    .question-setting {
+        text-align: left;
+        position: absolute;
+        width: 100px;
+    }
+    .question-setting-item {
+
+    }
+    .right-border {
+        border-right: lightgrey 1px solid;
+    }
+    .margin-bot {
+        margin-bottom: 10px;
     }
 </style>
 
