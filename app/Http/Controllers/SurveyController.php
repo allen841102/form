@@ -41,12 +41,34 @@ class SurveyController extends Controller
      */
     public function store(Request $request)
     {
+        $count_question = 0;
+
         //TODO handle request, creating survey data from user to the database
         return response()->json($request->toArray(), 200);
         $fields = ['name'=> $request->input('name'),
                    'start_text'=>$request->input('start_text'),
                    'end_text'=>$request->input('end_text')];
 
+        foreach($questions as $request->input('questions'))
+        {   $count_question= $count_question + 1;
+            $count_answer = 0;
+
+            $fields2[] = [
+                'seq'=>$count_question,
+                'title'=>$request->input('questions.title'),
+                'required'=>$request->input('questions.required'),
+                'type_id'=>$request->input('questions.type')];
+
+            foreach ($answers as $questions->input('answers'))
+            {
+                $count_answer = $count_answer + 1;
+                $field3[] = [
+                    'text1'=>$request->input('answers.value'),
+                     'seq'=>$count_answer];
+;
+            }
+        }
+        /*
         $fields2 = [
             'seq'=>1,
             'title'=>'test',
@@ -56,7 +78,7 @@ class SurveyController extends Controller
         $field3 = [
             'text'=>'answer1',
             'seq'=>1];
-
+        */
         $master = Master::create($fields);
         $content = $master->content()->create($fields2);
         $answer = $content->answer()->create($field3);
