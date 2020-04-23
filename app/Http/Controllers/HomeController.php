@@ -26,7 +26,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $lists = Master::where('user_id', Auth::id())->with('content')->get();
+        $lists = Master::where('user_id', Auth::id())
+                       ->with('contents')
+                        ->get();
         $surveylist = [];
         foreach ($lists as $list) {
             $surveylist[] = [

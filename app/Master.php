@@ -11,13 +11,13 @@ class Master extends Model
     protected $table = 'Master';
     protected $guarded = [];
 
-    public function content()
+    public function contents()
     {
         return $this->hasMany(Content::class);
     }
 
     public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
 }

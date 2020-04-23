@@ -74,10 +74,10 @@ class SurveyController extends Controller
         foreach ($questionFields as $fields) {
             $attrs = $fields;
             unset($attrs['answers']);
-            $content = $master->content()->create($attrs);
+            $content = $master->contents()->create($attrs);
             foreach ($fields['answers'] as $answer) {
                 if (!empty($answer['text'])) {
-                    $content->answer()->create($answer);
+                    $content->answers()->create($answer);
                 }
             }
         }
@@ -104,7 +104,7 @@ class SurveyController extends Controller
     public function edit($id)
     {
         //TODO: Get whole survey object from the database
-        $survey = Master::find($id);
+        $survey = Master::find($id)->load('contents.answers');
         return view('admin.edit', ['survey'=>json_encode($survey)]);
     }
 

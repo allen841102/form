@@ -9,13 +9,18 @@ class Content extends Model
     protected $table = 'content';
     protected $guarded = [];
 
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+    }
+
     public function master()
     {
         return $this->belongsTo(Master::class);
     }
 
-    public function answer()
+    public function type()
     {
-        return $this->hasMany(Answer::class);
+        return $this->belongsTo(Type::class);
     }
 }

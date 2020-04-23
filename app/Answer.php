@@ -13,9 +13,4 @@ class Answer extends Model
     {
         return $this->belongsTo(Content::class);
     }
-
-    public function type()
-    {
-        return $this->hasOne(Type::class);
-    }
 }

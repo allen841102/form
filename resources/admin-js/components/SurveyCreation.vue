@@ -191,11 +191,12 @@
             }
        },
        created() {
-           let { name  , start_text, end_text, questions} = this.userSurvey || {}
+           let { name  , start_text, end_text, contents} = this.userSurvey || {}
            this.survey = { name: name || '',
                            start_text: start_text || '',
                            end_text: end_text || '',
-                           questions: questions || [] }
+                           questions: contents || [] }
+           console.log(this.survey)
            if(this.userSurvey) {
                this.isNew = false
            }
