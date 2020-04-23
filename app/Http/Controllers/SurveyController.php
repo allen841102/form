@@ -135,6 +135,6 @@ class SurveyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //TODO handle request, deleting the whole survey data with $id
     }
 }
