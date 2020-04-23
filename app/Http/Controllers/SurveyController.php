@@ -103,8 +103,14 @@ class SurveyController extends Controller
      */
     public function edit($id)
     {
-        //TODO: Get whole survey object from the database
         $survey = Master::find($id)->load('contents.answers');
+        foreach ($survey->contents as $content) {
+            $content['type'] = $content->type_id;
+            unset($content->type_id);
+            foreach ($content->answers as $key=>$answerModel) {
+                $content->answers[$key] = $answerModel->text;
+            }
+        }
         return view('admin.edit', ['survey'=>json_encode($survey)]);
     }
 
