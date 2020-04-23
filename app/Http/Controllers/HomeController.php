@@ -25,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        $lists = Master::with('Content')->get();
+        $lists = Master::with('content')->get();
         $surveylist = [];
         foreach ($lists as $list)
         {
