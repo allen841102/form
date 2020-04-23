@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Master;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,17 +25,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         $lists = Master::with('content')->get();
         $surveylist = [];
-        foreach ($lists as $list)
-        {
-
+        foreach ($lists as $list) {
             $surveylist[] = [
                 'sequence'=> $list->id,
                 'title'=> $list->name,
-                'created_at'=> $list->created_at,
-                'updated_at'=> $list->update_at,
+                'created_at'=> $this->getDateTime($list->created_at),
+                'updated_at'=> $this->getDateTime($list->updated_at),
                 'question_count'=> count($list->Content),
                 'status'=> $list->status,
                 'response_count'=> 33,
@@ -43,6 +41,14 @@ class HomeController extends Controller
                 'edit_link'=> '/admin/survey/edit/'.$list->id,];
         }
         return view('admin.home', ['list'=>json_encode($surveylist)]);
+    }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $list
+     * @return string
+     */
+    private function getDateTime(?Carbon $time): string
+    {
+        return $time ? $time->format('Y-m-d H:i:s') : 'N/A';
     }
 }

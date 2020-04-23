@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    protected $table = 'answer';
+    protected $guarded = [];
+
     public function content()
     {
-        return $this->belongsTo('APP\Content');
+        return $this->belongsTo(Content::class);
     }
 
     public function type()
     {
-        return $this->hasOne('APP\Type');
+        return $this->hasOne(Type::class);
     }
-    protected $table = 'answer';
-    public $timestamps = false;
-    protected $guarded = [];
 }
