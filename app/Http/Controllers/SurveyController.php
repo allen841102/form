@@ -7,6 +7,7 @@ use App\Answer;
 use App\Content;
 use App\Master;
 use App\Type;
+use Illuminate\Support\Facades\Auth;
 
 class SurveyController extends Controller
 {
@@ -42,6 +43,7 @@ class SurveyController extends Controller
         $masterFields = ['name'=> $request->input('name'),
                          'start_text'=>$request->input('start_text'),
                          'end_text'=>$request->input('end_text'),
+                         'user_id' => Auth::user()->id,
                          'status'=>Master::STATUS_ACTIVE];
         $questions = $request->input('questions');
 
@@ -50,9 +52,9 @@ class SurveyController extends Controller
         foreach ($questions as $question) {
             $ansSeq = 1;
             $answers = [];
-            foreach ($question['answers'] as $answer) {
+            foreach ($question['answers'] as $value) {
                 $answers[] = [
-                    'text'=>$answer,
+                    'text'=>$value,
                     'seq'=>$ansSeq++
                     //'content_id'
                 ];
@@ -67,13 +69,16 @@ class SurveyController extends Controller
                 //'master_id'
             ];
         }
+
         $master = Master::create($masterFields);
         foreach ($questionFields as $fields) {
             $attrs = $fields;
             unset($attrs['answers']);
             $content = $master->content()->create($attrs);
             foreach ($fields['answers'] as $answer) {
-                $content->answer()->create($answer);
+                if (!empty($answer['text'])) {
+                    $content->answer()->create($answer);
+                }
             }
         }
         return response()->json(['url'=> route('dashboard')]);

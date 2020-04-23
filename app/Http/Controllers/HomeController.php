@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Master;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -25,7 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $lists = Master::with('content')->get();
+        $lists = Master::where('user_id', Auth::id())->with('content')->get();
         $surveylist = [];
         foreach ($lists as $list) {
             $surveylist[] = [
