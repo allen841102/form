@@ -85,6 +85,7 @@
             },
             handleDelete(index, row) {
                 console.log(index, row);
+                alert("DELETE request to backend")
             }
         }
     }

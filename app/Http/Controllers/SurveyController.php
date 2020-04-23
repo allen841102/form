@@ -41,6 +41,8 @@ class SurveyController extends Controller
      */
     public function store(Request $request)
     {
+        //TODO handle request, creating survey data from user to the database
+        return response()->json($request->toArray(), 200);
         $fields = ['name'=> $request->input('name'),
                    'start_text'=>$request->input('start_text'),
                    'end_text'=>$request->input('end_text')];
@@ -79,7 +81,9 @@ class SurveyController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.edit');
+        //TODO: Get whole survey object from the database
+        $survey = Master::find($id);
+        return view('admin.edit', ['survey'=>json_encode($survey)]);
     }
 
     /**
@@ -91,7 +95,8 @@ class SurveyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //TODO handle request, updating survey data from user to the database
+        return response()->json($request->toArray(), 200);
     }
 
     /**
