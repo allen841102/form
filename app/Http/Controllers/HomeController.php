@@ -36,7 +36,7 @@ class HomeController extends Controller
                 'title'=> $list->name,
                 'created_at'=> $this->getDateTime($list->created_at),
                 'updated_at'=> $this->getDateTime($list->updated_at),
-                'question_count'=> count($list->Content),
+                'question_count'=> count($list->Contents),
                 'status'=> $list->status,
                 'response_count'=> 33,
                 'response_time'=> '2020-03-31 14:23:12',

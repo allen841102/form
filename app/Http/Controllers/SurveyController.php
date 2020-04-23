@@ -123,8 +123,30 @@ class SurveyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //TODO handle request, updating survey data from user to the database
-        return response()->json($request->toArray(), 200);
+        $master = Master::where('user_id' , Auth::id())
+                         ->where('id' , $id)
+                         ->update(['name' => $request->input('name'),
+                                   'start_text' => $request->input('start_text'),
+                                    'end_text' => $request->input('end_text')]);
+
+        $questions = $request->input('questions');
+
+        foreach ($questions as $question)
+        {
+            $content = $master->contents()->updateOrCreate(['id' => $question['id']],
+                                                           ['title' => $question['title'],
+                                                            'required' => (int) $question['required'],
+                                                            'type_id' => $question['type']
+                                                            ]);
+
+            foreach (question['answers'] as $value)
+            {
+                $content->answers()->updateOrCreate(['id' => $value['id']],
+                                                    ['text' => $value,]);
+            }
+        }
+
+
     }
 
     /**
