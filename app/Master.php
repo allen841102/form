@@ -8,7 +8,7 @@ class Master extends Model
 {
     const STATUS_ACTIVE = 'Active';
 
-    protected $table = 'Master';
+    protected $table = 'master';
     protected $guarded = [];
 
     public function contents()

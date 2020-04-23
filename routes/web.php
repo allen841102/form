@@ -26,7 +26,8 @@ Auth::routes();
 Route::get('admin/dashboard', 'HomeController@index')->name('dashboard');
 
 //GET 建立 Survey 頁面
-Route::get('admin/survey/create', 'SurveyController@create')->name('survey.create');
+Route::get('admin/survey/create', 'SurveyController@create')
+     ->name('survey.create');
 
 //POST 建立 Survey 資料
 Route::post('admin/survey/create', 'SurveyController@store');
