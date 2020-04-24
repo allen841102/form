@@ -3,8 +3,6 @@
 @section('content')
 
 <div class="container">
-
-
     <div class="jumbotron bg-white">
         <h1 class="display-4"> 歡迎來到 {{ config('app.name') }}!</h1>
         <hr class="my-4">

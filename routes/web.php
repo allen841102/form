@@ -10,17 +10,12 @@
 |
 */
 Route::get('/', function () {
-    $name = request('name');
-
-    return view('welcome', [
-        'name' => $name
-    ]);
+    return view('welcome');
 });
-Route::get('form/{id}', 'FormController@show')->name('form.show');
+//建立 authentication 註冊 登入 忘記密碼 等 routes
 Auth::routes();
 //GET 登入後首頁
 Route::get('admin/dashboard', 'HomeController@index')->name('dashboard');
-
 Route::prefix('admin/survey')
      ->middleware('auth')
      ->group(function () {
