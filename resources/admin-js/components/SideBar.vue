@@ -78,6 +78,9 @@
         border-top: 1px solid lightgray;
         border-bottom: 1px solid lightgray;
     }
+    /*.el-main {*/
+    /*    border-left: 1px solid lightgray;*/
+    /*}*/
 
     .el-dropdown-link {
         cursor: pointer;

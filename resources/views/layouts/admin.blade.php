@@ -12,12 +12,14 @@
 <body>
 
 <div id="app">
-    <el-container style="height: auto; border: 1px solid #eee">
+
+   <el-container >
         <side-bar
             home-page="{{route('dashboard')}}"
             creation-link="{{ route('survey.create') }}"
             username="Allen"
         ></side-bar>
+    <el-container style="height: auto;">
         <el-container direction="vertical">
             <nav-header header-text="{{ $headerText ?? '歡迎來到後台管理介面' }}"></nav-header>
             <el-main>
@@ -25,6 +27,8 @@
             </el-main>
         </el-container>
     </el-container>
+
+   </el-container>
 </div>
 <script src="{{ mix('admin-js/admin.js') }}"></script>
 @yield('script')
