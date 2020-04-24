@@ -19,7 +19,7 @@
             username="Allen"
         ></side-bar>
         <el-container direction="vertical">
-            <nav-header header-text="{{ $headerText ?? '歡迎來到 '. config('app.name') . ' 後台管理介面' }}"></nav-header>
+            <nav-header header-text="{{ $headerText ?? '歡迎來到後台管理介面' }}"></nav-header>
             <el-main>
                 @yield('content')
             </el-main>
