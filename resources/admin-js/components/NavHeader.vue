@@ -1,5 +1,5 @@
 <template>
-    <el-header height="110px">
+    <el-header height="130px">
         {{ headerText}}
     </el-header>
 </template>
@@ -17,7 +17,7 @@
 
 <style>
     .el-header {
-        background-color: #409EFF;
+        background-color: #c7f0f5;
         color: #606266;
         line-height: 50px;
         padding: 20px;

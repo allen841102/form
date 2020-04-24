@@ -1,13 +1,17 @@
 <template>
-    <el-aside width="240px" style="background-color: rgb(238, 241, 246)">
-        <div class="logo"><a :href="homePage"><span>後台首頁圖片 </span></a></div>
+    <el-aside width="240px">
+        <a :href="homePage">
+            <div class="">
+                <img src="/images/logo.png">
+            </div>
+        </a>
         <el-dropdown trigger="click">
             <div class="user-info">
                 <span>
-                <img src="/images/portait.png" class="user-avatar">
+                <img class="user-avatar" src="/images/portait.png">
                 </span>
                 <span class="username">{{ username }}</span>
-                <i class="el-icon-caret-bottom" />
+                <i class="el-icon-caret-bottom"/>
             </div>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>個人檔案</el-dropdown-item>
@@ -20,8 +24,16 @@
         <el-menu :default-openeds="['1']">
             <el-submenu index="1">
                 <template slot="title"><i class="el-icon-menu"></i>問券總覽</template>
-                <a href="/admin/survey/1"><el-menu-item index="1-1"><div class="first-letter">飲</div><span class="survey-name">飲食習慣研究</span></el-menu-item></a>
-                <a href="/admin/survey/2"><el-menu-item index="1-2"><div class="first-letter">大</div><span class="survey-name">大學生打工調查</span></el-menu-item></a>
+                <a class="survey-link" href="/admin/survey/1">
+                    <el-menu-item index="1-1">
+                        <div class="first-letter">飲</div>
+                        <span class="survey-name">飲食習慣研究</span></el-menu-item>
+                </a>
+                <a class="survey-link" href="/admin/survey/2">
+                    <el-menu-item index="1-2">
+                        <div class="first-letter">大</div>
+                        <span class="survey-name">大學生打工調查</span></el-menu-item>
+                </a>
             </el-submenu>
             <el-menu-item index="2">
                 <template slot="title">
@@ -43,7 +55,7 @@
                 type: String,
                 required: true
             },
-            username:  {
+            username: {
                 type: String,
                 required: true
             }
@@ -52,27 +64,40 @@
 </script>
 
 <style>
-    .logo {
-        text-align: center;
-        padding: 10px 0 0 0;
-        font-size: 1.2em;
+    img {
+        max-width: 100%;
+        height: auto;
     }
+
     .el-aside {
         color: #333;
     }
+
+    .el-dropdown {
+        display: block;
+        border-top: 1px solid lightgray;
+        border-bottom: 1px solid lightgray;
+    }
+    /*.el-main {*/
+    /*    border-left: 1px solid lightgray;*/
+    /*}*/
+
     .el-dropdown-link {
         cursor: pointer;
         color: #409EFF;
     }
+
     .el-icon-arrow-down {
         font-size: 12px;
     }
+
     .user-info {
         cursor: pointer;
         width: 200px;
         height: auto;
         padding: 10px;
     }
+
     .user-avatar {
         width: 40px;
         height: 40px;
@@ -80,7 +105,8 @@
         border-radius: 100%;
         overflow: hidden;
     }
-    .username{
+
+    .username {
         width: 140px;
         margin: 0 0 30px 20px;
         overflow: hidden;
@@ -88,7 +114,8 @@
         font-weight: bold;
         line-height: 1.5;
     }
-    .first-letter{
+
+    .first-letter {
         display: inline-block;
         vertical-align: middle;
         width: 24px;
@@ -99,10 +126,15 @@
         background-color: #eee;
         border-radius: 24px;
     }
-    .survey-name{
+
+    .survey-name {
         width: 100%;
         display: inline-block;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .survey-link {
+        text-decoration: none;
     }
 </style>
