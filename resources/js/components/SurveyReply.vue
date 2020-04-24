@@ -1,9 +1,10 @@
 <template>
     <el-container style="height: auto;">
         <el-header height="auto">
-            <h2>{{ survey.name }}</h2>
+            <h2 v-if="done===false">{{ survey.name }}</h2>
+            <h2 v-if="done">{{ survey.end_text }}</h2>
         </el-header>
-        <el-main>
+        <el-main v-if="done === false">
             <h3>{{ survey.start_text}}</h3>
             <el-form :model="result" label-position="top" label-width="100px">
 
@@ -61,6 +62,7 @@
         },
         data() {
             return {
+                done: false,
                 result: {
                     questions: []
                 },
@@ -125,6 +127,7 @@
                    finalResult.push({seq: index+1, answer: question.answer})
                 })
                 alert("Submit form"+ JSON.stringify(finalResult))
+                this.done = true
             }
         }
     }
