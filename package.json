@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "element-ui": "^2.13.0",
+        "normalize.css": "^8.0.1",
         "vuedraggable": "^2.23.2"
     }
 }

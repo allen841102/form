@@ -12,6 +12,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('s/{id}', 'Frontend\SurveyController@show');
+
 //建立 authentication 註冊 登入 忘記密碼 等 routes
 Auth::routes();
 //GET 登入後首頁
