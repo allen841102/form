@@ -9,8 +9,14 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
-<body>
+<body style="margin: 0;">
 <div id="app">
+    <el-image
+            src="/images/survey.jpeg"
+            style="max-height: 400px;"
+            fit="scale-down"
+    >
+    </el-image>
     <survey-reply :survey="{{$survey->toJson()}}"></survey-reply>
 </div>
 </body>
