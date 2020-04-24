@@ -8,8 +8,14 @@
     <title>{{ $survey->name }}</title>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <style>
+        body{
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+            margin: 0;
+        }
+        </style>
 </head>
-<body style="margin: 0;">
+<body>
 <div id="app">
     <el-image
             src="/images/survey.jpeg"

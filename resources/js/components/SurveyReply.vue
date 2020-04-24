@@ -1,5 +1,5 @@
 <template>
-    <el-container class="survey-container">
+    <el-container style="height: auto;">
         <el-header height="auto">
             <h2>{{ survey.name }}</h2>
         </el-header>
@@ -37,9 +37,18 @@
 
                     </el-input>
                 </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">送出</el-button>
+                </el-form-item>
             </el-form>
         </el-main>
-        <el-footer>Footer</el-footer>
+        <el-footer height="auto" class="footer">
+            <el-progress :percentage="progress"
+                         :stroke-width="20"
+                         :text-inside="true"
+                         status="exception">
+            </el-progress>
+        </el-footer>
     </el-container>
 </template>
 <script>
@@ -88,6 +97,17 @@
             })
             console.log(this.result)
         },
+        computed: {
+            progress: function () {
+                let answered = 0
+                this.result.questions.forEach(question => {
+                    if (question.answer != [] && question.answer != '') {
+                        answered++
+                    }
+                })
+                return answered / this.result.questions.length * 100
+            }
+        },
         methods: {
             getTypeName(typeId) {
                 return this.questionOptions.find(item => {
@@ -99,8 +119,12 @@
                     return typeId === item.type;
                 }).icon;
             },
-            handleSubmit() {
-                alert("Submit form")
+            onSubmit() {
+                let finalResult = []
+                this.result.questions.forEach( (question, index) => {
+                   finalResult.push({seq: index+1, answer: question.answer})
+                })
+                alert("Submit form"+ JSON.stringify(finalResult))
             }
         }
     }
@@ -110,6 +134,7 @@
     h1, h2 {
         color: rgb(221, 104, 104);
     }
+
     h3 {
         color: lightgray;
     }
@@ -121,6 +146,7 @@
         line-height: 1.5;
         color: rgb(221, 104, 104);
     }
+
     .el-form-item__content label {
         display: block;
         margin-bottom: 10px;
@@ -177,8 +203,21 @@
         background: rgb(175, 50, 50);
     }
 
-    .el-checkbox__input.is-checked+.el-checkbox__label,
+    .el-checkbox__input.is-checked + .el-checkbox__label,
     .el-radio__input.is-checked + .el-radio__label {
         color: rgb(175, 50, 50);
+    }
+    .footer {
+        margin-top: 10px;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: whitesmoke;
+        z-index: 999;
+        padding: 5px;
+    }
+    div.el-progress-bar {
+       width: 60%;
     }
 </style>
