@@ -33,4 +33,6 @@ Route::prefix('admin/survey')
          Route::get('edit/{id}', 'SurveyController@edit');
          //PUT 更新 Survey 資料
          Route::put('{id}', 'SurveyController@update');
+
+         Route::delete('{id}', 'SurveyController@destroy');
      });

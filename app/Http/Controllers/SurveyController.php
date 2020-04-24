@@ -134,7 +134,6 @@ class SurveyController extends Controller
                             'start_text' => $request->input('start_text', '沒有開頭'),
                             'end_text'   => $request->input('end_text', '沒有結尾')
                         ]);
-
         //delete master's relations
         foreach ($master->contents as $content) {
             foreach ($content->answers as $answer) {
@@ -142,7 +141,6 @@ class SurveyController extends Controller
             }
             $content->delete();
         }
-
         //create new relations
         $questions = $request->input('questions');
         $seq = 1;
@@ -191,6 +189,7 @@ class SurveyController extends Controller
             $content->delete();
         }
         $master->delete();
+
         return response()->json();
     }
 }
