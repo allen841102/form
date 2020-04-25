@@ -42,6 +42,13 @@
                     <el-button class="big-btn" type="primary" @click="onSubmit">送出</el-button>
                 </el-form-item>
             </el-form>
+
+        </el-main>
+
+        <el-main v-if="done">
+            <a href="/">
+                <el-button class="big-btn" type="primary"> 前往 Survey Project </el-button>
+            </a>
         </el-main>
         <el-footer height="auto" class="footer">
             <el-progress :percentage="progress"
@@ -107,7 +114,8 @@
                         answered++
                     }
                 })
-                return answered / this.result.questions.length * 100
+                let progress = answered / this.result.questions.length * 100
+                return Math.round(progress)
             }
         },
         methods: {
