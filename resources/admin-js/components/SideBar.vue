@@ -1,5 +1,5 @@
 <template>
-    <el-aside width="240px">
+    <el-aside width="240px" style="border-right: 1px solid lightgray;">
         <a :href="homePage">
             <div class="">
                 <img src="/images/logo.png">
@@ -136,5 +136,8 @@
 
     .survey-link {
         text-decoration: none;
+    }
+    .el-menu {
+        border-right: none;
     }
 </style>

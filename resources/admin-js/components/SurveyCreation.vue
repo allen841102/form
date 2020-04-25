@@ -96,7 +96,7 @@
                 </draggable>
 
                 <el-form-item v-show="survey.questions.length > 0">
-                    <el-button type="primary" @click="submitForm('ruleForm')">送出</el-button>
+                    <el-button type="primary" class="big-btn" @click="submitForm('ruleForm')">送出</el-button>
 <!--                    <el-button @click="resetForm('ruleForm')">Reset</el-button>-->
                 </el-form-item>
                 <span v-show="survey.questions.length===0" class="empty-question-area"> 請加入題目 </span>
@@ -324,7 +324,7 @@
         margin-top: 30px;
     }
     .question-item {
-        border-left: 5px groove rgba(28,110,164,0.21);
+        border-left: 5px solid #c7f0f5;
         padding-left: 10px;
         min-height: 210px;
         margin-bottom: 10px;
@@ -359,6 +359,9 @@
         padding: 100px 200px 100px 200px;
         border: 1px dotted;
         display: block;
+    }
+    .big-btn {
+        width: 100%;
     }
 </style>
 

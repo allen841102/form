@@ -39,7 +39,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit">送出</el-button>
+                    <el-button class="big-btn" type="primary" @click="onSubmit">送出</el-button>
                 </el-form-item>
             </el-form>
         </el-main>
@@ -134,7 +134,7 @@
 </script>
 
 <style>
-    h1, h2 {
+    h2 {
         color: rgb(221, 104, 104);
     }
 
@@ -222,5 +222,8 @@
     }
     div.el-progress-bar {
        width: 60%;
+    }
+    .big-btn {
+        width: 100%;
     }
 </style>

@@ -13,7 +13,7 @@
 
 <div id="app">
 
-   <el-container >
+   <el-container style="border: 1px solid #eee">
         <side-bar
             home-page="{{route('dashboard')}}"
             creation-link="{{ route('survey.create') }}"
@@ -27,7 +27,6 @@
             </el-main>
         </el-container>
     </el-container>
-
    </el-container>
 </div>
 <script src="{{ mix('admin-js/admin.js') }}"></script>
