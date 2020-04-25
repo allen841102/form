@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Answer;
+use App\Content;
 use App\Master;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,9 +53,9 @@ class SurveyController extends Controller
         foreach ($questions as $question) {
             $ansSeq = 1;
             $answers = [];
-            foreach ($question['answers'] as $value) {
+            foreach ($question['answers'] as $answer) {
                 $answers[] = [
-                    'text' => $value,
+                    'text' => $answer['text'],
                     'seq'  => $ansSeq++
                     //'content_id'
                 ];
@@ -111,6 +113,7 @@ class SurveyController extends Controller
 //                $content->answers[$key] = $answerModel->text;
 //            }
         }
+
         return view('admin.edit', ['survey' => json_encode($survey)]);
     }
 
@@ -126,6 +129,7 @@ class SurveyController extends Controller
     {
         $master = Master::where('user_id', Auth::id())
                         ->where('id', $id)
+                        ->with('contents')
                         ->first();
         //update master
         $master->update([
@@ -133,34 +137,32 @@ class SurveyController extends Controller
                             'start_text' => $request->input('start_text', '沒有開頭'),
                             'end_text'   => $request->input('end_text', '沒有結尾')
                         ]);
-        //delete master's relations
-        foreach ($master->contents as $content) {
-            foreach ($content->answers as $answer) {
-                $answer->delete();
-            }
-            $content->delete();
-        }
-        //create new relations
+        //update or create relations
         $questions = $request->input('questions');
-        $seq = 1;
+        $contentSeq = 1;
         foreach ($questions as $question) {
-            $content = $master->contents()->create(
-                [
-                    'seq'      => $seq++,
-                    'title'    => $question['title'],
-                    'required' => (int)$question['required'],
-                    'type_id'  => $question['type']
-                ]
-            );
+            $attrs = [
+                'seq'      => $contentSeq++,
+                'title'    => $question['title'],
+                'required' => (int)$question['required'],
+                'type_id'  => $question['type'],
+            ];
+            if (is_null($question['id'])) {
+                $content = $master->contents()->create($attrs);
+            } else {
+                $content = Content::where('id', $question['id'])->first();
+                $content->update($attrs);
+            }
             $ansSeq = 1;
-            foreach ($question['answers'] as $value) {
-                if (!empty($value)) {
-                    $content->answers()->create(
-                        [
-                            'seq'  => $ansSeq++,
-                            'text' => $value,
-                        ]
-                    );
+            foreach ($question['answers'] as $newAnswer) {
+                $ansAttrs = [
+                        'seq'  => $ansSeq++,
+                        'text' => $newAnswer['text'],
+                    ];
+                if (empty($newAnswer['id'])) {
+                    $content->answers()->create($ansAttrs);
+                } else {
+                    Answer::where('id', $newAnswer['id'])->update($ansAttrs);
                 }
             }
         }
