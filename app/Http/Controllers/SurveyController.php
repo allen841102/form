@@ -107,11 +107,10 @@ class SurveyController extends Controller
         foreach ($survey->contents as $content) {
             $content['type'] = $content->type_id;
             unset($content->type_id);
-            foreach ($content->answers as $key => $answerModel) {
-                $content->answers[$key] = $answerModel->text;
-            }
+//            foreach ($content->answers as $key => $answerModel) {
+//                $content->answers[$key] = $answerModel->text;
+//            }
         }
-
         return view('admin.edit', ['survey' => json_encode($survey)]);
     }
 
