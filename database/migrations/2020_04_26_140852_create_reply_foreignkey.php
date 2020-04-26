@@ -19,6 +19,7 @@ class CreateReplyForeignkey extends Migration
 
         Schema::table('reply_content', function (Blueprint $table) {
             $table->foreign('content_id')->references('id')->on('content');
+            $table->foreign('reply_master_id')->references('id')->on('reply_master');
         });
     }
 
@@ -35,6 +36,7 @@ class CreateReplyForeignkey extends Migration
 
         Schema::table('reply_content',function (Blueprint $table) {
             $table->dropForeign(['content_id']);
+            $table->dropForeign(['reply_master_id']);
         });
     }
 }
