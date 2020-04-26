@@ -20,16 +20,18 @@
                     </span>
                     <el-radio-group v-if="question.type == 1" v-model="question.answer">
                         <el-radio :key="idx + 1"
-                                  :label="answer.text"
+                                  :label="answer.id"
                                   v-for="(answer, idx) in question.answers">
+                            {{ answer.text }}
                         </el-radio>
                     </el-radio-group>
 
                     <el-checkbox-group v-if="question.type == 2" v-model="question.answer">
                         <el-checkbox :key="idx + 1"
-                                     :label="answer.text"
+                                     :label="answer.id"
                                      :name="'answer' + (idx + 1).toString()"
                                      v-for="(answer, idx) in question.answers">
+                            {{ answer.text }}
                         </el-checkbox>
                     </el-checkbox-group>
 
@@ -39,7 +41,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button class="big-btn" type="primary" @click="onSubmit">送出</el-button>
+                    <el-button @click="onSubmit" class="big-btn" type="primary">送出</el-button>
                 </el-form-item>
             </el-form>
 
@@ -47,10 +49,10 @@
 
         <el-main v-if="done">
             <a href="/">
-                <el-button class="big-btn" type="primary"> 前往 Survey Project </el-button>
+                <el-button class="big-btn" type="primary"> 前往 Survey Project</el-button>
             </a>
         </el-main>
-        <el-footer height="auto" class="footer">
+        <el-footer class="footer" height="auto">
             <el-progress :percentage="progress"
                          :stroke-width="20"
                          :text-inside="true"
@@ -130,12 +132,36 @@
                 }).icon;
             },
             onSubmit() {
-                let finalResult = []
-                this.result.questions.forEach( (question, index) => {
-                   finalResult.push({seq: index+1, answer: question.answer})
+                let finalResult = {
+                    master_id: this.survey.id,
+                    reply_contents: []
+                }
+
+                this.result.questions.forEach((question, index) => {
+                    let answer;
+                    if (question.type === 1) {
+                        answer = {'id': question.answer}
+                    } else if (question.type === 2) {
+                        answer = {'ids': question.answer}
+                    } else if (question.type === 3) {
+                        answer = {'text': question.answer}
+                    }
+                    finalResult.reply_contents.push({
+                        content_id: question.id,
+                        answer:  {...answer}
+                    })
                 })
-                alert("Submit form"+ JSON.stringify(finalResult))
-                this.done = true
+                axios.post('/post', finalResult)
+                    .then(function (response) {
+                        this.done = true
+                    })
+                    .catch(function (error, reason) {
+                        if (error.response) {
+                            alert(JSON.stringify(error.response))
+                        } else {
+                            alert(error)
+                        }
+                    })
             }
         }
     }
@@ -218,6 +244,7 @@
     .el-radio__input.is-checked + .el-radio__label {
         color: rgb(175, 50, 50);
     }
+
     .footer {
         margin-top: 10px;
         position: fixed;
@@ -228,9 +255,11 @@
         z-index: 999;
         padding: 5px;
     }
+
     div.el-progress-bar {
-       width: 60%;
+        width: 60%;
     }
+
     .big-btn {
         width: 100%;
     }
