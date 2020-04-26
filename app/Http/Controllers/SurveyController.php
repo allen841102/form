@@ -8,6 +8,7 @@ use App\Master;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SurveyController extends Controller
 {
@@ -175,7 +176,10 @@ class SurveyController extends Controller
                     $content = Content::where('id', $question['id'])->first();
                     $content->update($attrs);
                 }
-
+                if ($question['type'] == '3')
+                {
+                    continue;
+                }
                 //刪除答案
                 foreach ($content->answers as $answer) {
                     $found = false;
@@ -206,6 +210,7 @@ class SurveyController extends Controller
             DB::commit();
             return response()->json(['url' => route('dashboard')]);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             DB::rollBack();
         }
     }

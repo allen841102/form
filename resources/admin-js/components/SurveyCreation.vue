@@ -244,7 +244,7 @@
                 axios.put('/admin/survey/' + this.userSurvey.id, this.survey)
                     .then(function (response) {
                         alert('更新成功 ' + JSON.stringify(response.data))
-                        //window.location.href = response.data.url
+                        window.location.reload()
                     })
                     .catch(function (error, reason) {
                         if (error.response) {
