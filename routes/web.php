@@ -15,7 +15,7 @@ Route::get('/', function () {
 
 Route::get('s/{id}', 'Frontend\SurveyController@show');
 //使用者回覆survey
-Route::post('post', 'SurveyController@post');
+Route::post('post', 'Frontend\SurveyController@post');
 //建立 authentication 註冊 登入 忘記密碼 等 routes
 Auth::routes();
 //GET 登入後首頁

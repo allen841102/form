@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Answer;
 use App\Content;
 use App\Master;
-use App\ReplyMaster;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -240,26 +239,7 @@ class SurveyController extends Controller
         return response()->json();
     }
 
-    public function post(Request $request)
-    {
-        $masterFields = [
-            'master_id'       => $request->input('master_id'),
-        ];
-        $contents = $request->input('reply_contents');
 
-        $contentFields = [];
-        foreach ($contents as $content)
-        {
-            $contentFields[] = [
-                'content_id' => $content['content_id'],
-                'answer' => json_encode($content['answer'])
-            ];
-        }
-        $reply_master = ReplyMaster::create($masterFields);
-        foreach ($contentFields as $fields) {
-            $reply_master->reply_content()->create($fields);
-        }
-    }
 }
 
 
