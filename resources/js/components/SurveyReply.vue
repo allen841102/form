@@ -41,7 +41,10 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="onSubmit" class="big-btn" type="primary">送出</el-button>
+                    <el-button @click="onSubmit"
+                               v-loading.fullscreen.lock="fullScreenLoading"
+                               class="big-btn"
+                               type="primary">送出</el-button>
                 </el-form-item>
             </el-form>
 
@@ -72,6 +75,7 @@
         data() {
             return {
                 done: false,
+                fullScreenLoading: false,
                 result: {
                     questions: []
                 },
@@ -136,7 +140,7 @@
                     master_id: this.survey.id,
                     reply_contents: []
                 }
-
+                this.fullScreenLoading = true
                 this.result.questions.forEach((question, index) => {
                     let answer;
                     if (question.type === 1) {
@@ -151,9 +155,17 @@
                         answer:  {...answer}
                     })
                 })
+                let self = this
+                setTimeout(function(){
+                    self.submitResult(finalResult)
+                    self.fullScreenLoading = false
+                }, 800)
+            },
+            submitResult(finalResult) {
+                let self = this
                 axios.post('/post', finalResult)
                     .then(function (response) {
-                        this.done = true
+                        self.done = true
                     })
                     .catch(function (error, reason) {
                         if (error.response) {
