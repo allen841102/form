@@ -30,11 +30,11 @@ class CreateReplyForeignkey extends Migration
      */
     public function down()
     {
-        Schema::table('reply_master',function (Blueprint $table) {
+        Schema::table('reply_master', function (Blueprint $table) {
             $table->dropForeign(['master_id']);
         });
 
-        Schema::table('reply_content',function (Blueprint $table) {
+        Schema::table('reply_content', function (Blueprint $table) {
             $table->dropForeign(['content_id']);
             $table->dropForeign(['reply_master_id']);
         });
