@@ -6,7 +6,6 @@ use App\Master;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class HomeController extends Controller
 {
@@ -28,8 +27,9 @@ class HomeController extends Controller
     public function index()
     {
         $lists = Master::where('user_id', Auth::id())
-                       ->with('contents')
+                       ->with('contents', 'replymasters')
                         ->get();
+        //dd($lists);
         $surveylist = [];
         foreach ($lists as $list) {
             $surveylist[] = [
@@ -39,8 +39,8 @@ class HomeController extends Controller
                 'updated_at'=> $this->getDateTime($list->updated_at),
                 'question_count'=> count($list->Contents),
                 'status'=> $list->status,
-                'response_count'=> 33,
-                'response_time'=> '2020-03-31 14:23:12',
+                'response_count'=> count($list->replymasters),
+                'response_time'=> $this->getDateTime($list->replymasters->max('updated_at')),
                 'view_link'=> '/admin/survey/'.$list->id,
                 'edit_link'=> '/admin/survey/edit/'.$list->id,];
         }

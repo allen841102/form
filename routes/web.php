@@ -19,7 +19,7 @@ Route::post('post', 'Frontend\SurveyController@post');
 //建立 authentication 註冊 登入 忘記密碼 等 routes
 Auth::routes();
 //GET 登入後首頁
-Route::get('admin/dashboard', 'HomeController@index')->name('dashboard');
+Route::get('admin/dashboard', 'SurveyController@index')->name('dashboard');
 Route::prefix('admin/survey')
      ->middleware('auth')
      ->group(function () {
