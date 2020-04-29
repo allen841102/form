@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Reply_master extends Model
+class ReplyMaster extends Model
 {
     protected $table = 'reply_master';
     protected $guarded = [];
@@ -16,6 +16,6 @@ class Reply_master extends Model
 
     public function reply_content()
     {
-        return $this->hasMany(Reply_content::class);
+        return $this->hasMany(ReplyContent::class);
     }
 }
