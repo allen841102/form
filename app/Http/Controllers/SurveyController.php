@@ -96,7 +96,13 @@ class SurveyController extends Controller
      */
     public function show($id)
     {
-        return view('admin.show');
+        $survey = Master::with('contents.answers')
+                        ->where(['id' => $id, 'user_id'=>Auth::id()])
+                        ->first();
+        if (is_null($survey)) {
+            abort(404);
+        }
+        return view('admin.show', ['survey'=>$survey->toJson()]);
     }
 
     /**
@@ -177,8 +183,7 @@ class SurveyController extends Controller
                     $content = Content::where('id', $question['id'])->first();
                     $content->update($attrs);
                 }
-                if ($question['type'] == '3')
-                {
+                if ($question['type'] == '3') {
                     continue;
                 }
                 //刪除答案
@@ -248,8 +253,7 @@ class SurveyController extends Controller
         $contents = $request->input('reply_contents');
 
         $contentFields = [];
-        foreach ($contents as $content)
-        {
+        foreach ($contents as $content) {
             $contentFields[] = [
                 'content_id' => $content['content_id'],
                 'answer' => json_encode($content['answer'])
@@ -261,5 +265,3 @@ class SurveyController extends Controller
         }
     }
 }
-
-
