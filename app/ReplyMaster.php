@@ -14,7 +14,7 @@ class ReplyMaster extends Model
         return $this->belongsTo(Master::class);
     }
 
-    public function reply_content()
+    public function replyContent()
     {
         return $this->hasMany(ReplyContent::class);
     }

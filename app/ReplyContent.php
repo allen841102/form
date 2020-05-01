@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class ReplyContent extends Model
 {
     protected $table = 'reply_content';
+    protected $casts =[
+        'answer' => 'array'
+    ];
     protected $guarded = [];
 
     public function content()
@@ -14,7 +17,7 @@ class ReplyContent extends Model
         return $this->belongsTo(Content::class);
     }
 
-    public function reply_master()
+    public function replyMaster()
     {
         return $this->belongsTo(ReplyMaster::class);
     }

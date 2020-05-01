@@ -21,7 +21,7 @@ class Master extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function replymasters()
+    public function replyMasters()
     {
         return $this->hasMany(ReplyMaster::class);
     }
