@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Answer;
 use App\Content;
 use App\Master;
+use App\Type;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,25 +27,25 @@ class SurveyController extends Controller
     public function index()
     {
         $lists = Master::where('user_id', Auth::id())
-            ->with('contents', 'replymasters')
-            ->get();
+                       ->with('contents', 'replymasters')
+                       ->get();
         $surveylist = [];
         foreach ($lists as $list) {
             $surveylist[] = [
-                'sequence' => $list->id,
-                'title' => $list->name,
-                'created_at' => $this->getDateTime($list->created_at),
-                'updated_at' => $this->getDateTime($list->updated_at),
+                'sequence'       => $list->id,
+                'title'          => $list->name,
+                'created_at'     => $this->getDateTime($list->created_at),
+                'updated_at'     => $this->getDateTime($list->updated_at),
                 'question_count' => count($list->Contents),
-                'status' => $list->status,
+                'status'         => $list->status,
                 'response_count' => count($list->replymasters),
-                'response_time' => $this->getDateTime($list->replymasters->max('updated_at')),
-                'view_link' => '/admin/survey/' . $list->id,
-                'edit_link' => '/admin/survey/edit/' . $list->id,];
+                'response_time'  => $this->getDateTime($list->replymasters->max('updated_at')),
+                'view_link'      => '/admin/survey/' . $list->id,
+                'edit_link'      => '/admin/survey/edit/' . $list->id,
+            ];
         }
 
         return view('admin.home', ['list' => json_encode($surveylist)]);
-
     }
 
     /**
@@ -68,11 +69,11 @@ class SurveyController extends Controller
     {
         //Validation
         $masterFields = [
-            'name' => $request->input('name'),
+            'name'       => $request->input('name'),
             'start_text' => $request->input('start_text'),
-            'end_text' => $request->input('end_text'),
-            'user_id' => Auth::user()->id,
-            'status' => Master::STATUS_ACTIVE
+            'end_text'   => $request->input('end_text'),
+            'user_id'    => Auth::user()->id,
+            'status'     => Master::STATUS_ACTIVE
         ];
         $questions = $request->input('questions');
         $seq = 1;
@@ -83,16 +84,16 @@ class SurveyController extends Controller
             foreach ($question['answers'] as $answer) {
                 $answers[] = [
                     'text' => $answer['text'],
-                    'seq' => $ansSeq++
+                    'seq'  => $ansSeq++
                     //'content_id'
                 ];
             }
             $questionFields[] = [
-                'seq' => $seq++,
-                'title' => $question['title'],
+                'seq'      => $seq++,
+                'title'    => $question['title'],
                 'required' => (int)$question['required'],
-                'type_id' => $question['type'],
-                'answers' => $answers
+                'type_id'  => $question['type'],
+                'answers'  => $answers
                 //'master_id'
             ];
         }
@@ -121,14 +122,16 @@ class SurveyController extends Controller
     public function show($id)
     {
         $survey = Master::with('contents.answers')
-            ->where(['id' => $id, 'user_id' => Auth::id()])
-            ->first();
+                        ->where([
+                                    'id'      => $id,
+                                    'user_id' => Auth::id()
+                                ])
+                        ->first();
         if (is_null($survey)) {
             abort(404);
         }
 
         return view('admin.show', ['survey' => $survey]);
-
     }
 
     /**
@@ -140,17 +143,21 @@ class SurveyController extends Controller
      */
     public function edit($id)
     {
-        $survey = Master::with(['contents' => function ($query) {
-            $query->orderBy('seq')
-                ->with(['answers' => function ($query) {
-                    $query->orderBy('seq');
-                }]);
-        }])->find($id);
-
+        $survey = Master::with([
+                                   'contents' => function ($query) {
+                                       $query->orderBy('seq')
+                                             ->with([
+                                                        'answers' => function ($query) {
+                                                            $query->orderBy('seq');
+                                                        }
+                                                    ]);
+                                   }
+                               ])->find($id);
         foreach ($survey->contents as $content) {
             $content['type'] = $content->type_id;
             unset($content->type_id);
         }
+
         return view('admin.edit', ['survey' => $survey->toJson()]);
     }
 
@@ -158,7 +165,7 @@ class SurveyController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -167,18 +174,16 @@ class SurveyController extends Controller
         try {
             DB::beginTransaction();
             $master = Master::where('user_id', Auth::id())
-                ->where('id', $id)
-                ->with('contents')
-                ->first();
+                            ->where('id', $id)
+                            ->with('contents')
+                            ->first();
             //update master
             $master->update([
-                'name' => $request->input('name', '沒有主題'),
-                'start_text' => $request->input('start_text', '沒有開頭'),
-                'end_text' => $request->input('end_text', '沒有結尾')
-            ]);
-
+                                'name'       => $request->input('name', '沒有主題'),
+                                'start_text' => $request->input('start_text', '沒有開頭'),
+                                'end_text'   => $request->input('end_text', '沒有結尾')
+                            ]);
             $questions = $request->input('questions');
-
             // 刪除題目
             foreach ($master->contents as $content) {
                 $found = false;
@@ -193,15 +198,14 @@ class SurveyController extends Controller
                     $content->delete();
                 }
             }
-
             //更新 或 建立 題目與答案
             $contentSeq = 1;
             foreach ($questions as $question) {
                 $attrs = [
-                    'seq' => $contentSeq++,
-                    'title' => $question['title'],
+                    'seq'      => $contentSeq++,
+                    'title'    => $question['title'],
                     'required' => (int)$question['required'],
-                    'type_id' => $question['type'],
+                    'type_id'  => $question['type'],
                 ];
                 if (is_null($question['id'])) {
                     $content = $master->contents()->create($attrs);
@@ -225,11 +229,10 @@ class SurveyController extends Controller
                         $answer->delete();
                     }
                 }
-
                 $ansSeq = 1;
                 foreach ($question['answers'] as $userAnswer) {
                     $ansAttrs = [
-                        'seq' => $ansSeq++,
+                        'seq'  => $ansSeq++,
                         'text' => $userAnswer['text'],
                     ];
                     if (empty($userAnswer['id'])) {
@@ -240,6 +243,7 @@ class SurveyController extends Controller
                 }
             }
             DB::commit();
+
             return response()->json(['url' => route('dashboard')]);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -257,8 +261,8 @@ class SurveyController extends Controller
     public function destroy($id)
     {
         $master = Master::where('user_id', Auth::id())
-            ->where('id', $id)
-            ->first();
+                        ->where('id', $id)
+                        ->first();
         //delete master's relations
         foreach ($master->contents as $content) {
             foreach ($content->answers as $answer) {
@@ -274,46 +278,79 @@ class SurveyController extends Controller
     public function chart($id)
     {
         $master = Master::where('user_id', Auth::id())
-            ->where('id', $id)
-            ->with('contents.replyContents', 'contents.answers')
-            ->first();
+                        ->where('id', $id)
+                        ->with('contents.replyContents', 'contents.answers')
+                        ->first();
+        $results = [];
         foreach ($master->contents as $content) {
-            $results = [];
-            $total = $content->replyContents->count();
-            foreach ($content->replyContents as $reply) {
-                $answer = $reply->answer;
-                if (isset($answer['id']) && array_key_exists($answer['id'], $results)) {
-                    $results[$answer['id']]['count']++;
-                } else if (isset($answer['id'])) {
-                    $results[$answer['id']] = ['count' => 1];
-                }
-            }
-            foreach ($results as $key => $result)
-            {
-                $results[$key]['percentage'] = $result['count']/$total;
-            }
-dd($results);
+            $results[] = [
+                'name'    => $content->title,
+                'details' => $this->getDetails($content)
+            ];
         }
-
-
+        return response()->json(['replydata'=>$results]);
     }
 
     public function review($id)
     {
-
-
     }
-
 
     public function share($id)
     {
-
-
     }
-
 
     private function getDateTime(?Carbon $time): string
     {
         return $time ? $time->format('Y-m-d H:i:s') : 'N/A';
+    }
+
+    /**
+     * @param $content
+     *
+     * @return mixed
+     */
+    private function getDetails($content)
+    {
+        $total = $content->replyContents->count();
+        $details = null;
+        if ($content->type_id == Type::MULTIPLE_CHOICE) {
+            $details = $content->replyContents
+                ->pluck('answer')
+                ->countBy()
+                ->map(function ($item, $key) use ($total) {
+                    return [
+                        'name'       => Answer::find($key)->text,
+                        'count'      => $item,
+                        'percentage' => round($item / $total, 2)
+                    ];
+                })
+                ->values()
+                ->all();
+        } elseif ($content->type_id == Type::CHOICES) {
+            $details = $content->replyContents
+                ->pluck('answer')
+                ->flatten()
+                ->countBy()
+                ->map(function ($item, $key) use ($total) {
+                    return [
+                        'name'       => Answer::find($key)->text,
+                        'count'      => $item,
+                        'percentage' => round($item / $total, 2)
+                    ];
+                })
+                ->values()
+                ->all();
+        } elseif ($content->type_id == Type::SIMPLE_TEXT) {
+           $details = $content->replyContents->pluck('answer')->countBy()
+               ->map(function ($item, $key) use ($total) {
+                   return [
+                       'name'       => $key,
+                       'count'      => $item,
+                       'percentage' => round($item / $total, 2)
+                   ];
+               })->values()->all();
+        }
+
+        return $details;
     }
 }
