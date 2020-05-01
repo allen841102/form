@@ -3,8 +3,8 @@
         <div class="page-area">
             <el-pagination
                     :current-page.sync="currentPage"
-                    :page-size="100"
-                    :total="1000"
+                    :page-size="pageSize"
+                    :total="total"
                     @current-change="handleCurrentChange"
                     @size-change="handleSizeChange"
                     layout="total, prev, pager, next">
@@ -37,8 +37,8 @@
         <div class="page-area">
             <el-pagination
                     :current-page.sync="currentPage"
-                    :page-size="100"
-                    :total="1000"
+                    :page-size="pageSize"
+                    :total="total"
                     @current-change="handleCurrentChange"
                     @size-change="handleSizeChange"
                     layout="total, prev, pager, next">
@@ -90,7 +90,9 @@
                         key: 'q2',
                     }
                 ],
-                currentPage: 5
+                currentPage: 3,
+                pageSize: 10,
+                total: 50,
             }
         }
     }
