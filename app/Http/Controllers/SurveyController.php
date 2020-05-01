@@ -39,7 +39,6 @@ class SurveyController extends Controller
                 'edit_link'=> '/admin/survey/edit/'.$list->id,];
         }
         return view('admin.home', ['list'=>json_encode($surveylist)]);
-
     }
 
     /**
@@ -121,7 +120,7 @@ class SurveyController extends Controller
         if (is_null($survey)) {
             abort(404);
         }
-        return view('admin.show', ['survey'=>$survey->toJson()]);
+        return view('admin.show', ['survey'=>$survey]);
     }
 
     /**
