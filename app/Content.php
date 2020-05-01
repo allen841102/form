@@ -9,6 +9,8 @@ class Content extends Model
     protected $table = 'content';
     protected $guarded = [];
 
+
+
     public function answers()
     {
         return $this->hasMany(Answer::class);
@@ -27,5 +29,28 @@ class Content extends Model
     public function replyContents()
     {
         return $this->hasMany(ReplyContent::class);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDetails(): array
+    {
+        $total = $this->replyContents->count();
+        $typeId = $this->type_id;
+        $details = $this->replyContents->pluck('answer');
+        if ($typeId == Type::CHOICES) {
+            $details = $details->flatten();
+        }
+       return $details->countBy()
+                ->map(function ($item, $key) use ($total, $typeId) {
+                    return [
+                        'name'       => $typeId == Type::SIMPLE_TEXT ? $key : Answer::find($key)->text,
+                        'count'      => $item,
+                        'percentage' => round($item / $total, 2)
+                    ];
+                })
+                ->values()
+                ->all();
     }
 }

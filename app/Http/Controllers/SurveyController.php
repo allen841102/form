@@ -286,9 +286,10 @@ class SurveyController extends Controller
             $results[] = [
                 'name'    => $content->title,
                 'type_id' => $content->type_id,
-                'details' => $this->getDetails($content)
+                'details' => $content->getDetails(),
             ];
         }
+
         return response()->json($results);
     }
 
@@ -305,53 +306,4 @@ class SurveyController extends Controller
         return $time ? $time->format('Y-m-d H:i:s') : 'N/A';
     }
 
-    /**
-     * @param $content
-     *
-     * @return mixed
-     */
-    private function getDetails($content)
-    {
-        $total = $content->replyContents->count();
-        $details = null;
-        if ($content->type_id == Type::MULTIPLE_CHOICE) {
-            $details = $content->replyContents
-                ->pluck('answer')
-                ->countBy()
-                ->map(function ($item, $key) use ($total) {
-                    return [
-                        'name'       => Answer::find($key)->text,
-                        'count'      => $item,
-                        'percentage' => round($item / $total, 2)
-                    ];
-                })
-                ->values()
-                ->all();
-        } elseif ($content->type_id == Type::CHOICES) {
-            $details = $content->replyContents
-                ->pluck('answer')
-                ->flatten()
-                ->countBy()
-                ->map(function ($item, $key) use ($total) {
-                    return [
-                        'name'       => Answer::find($key)->text,
-                        'count'      => $item,
-                        'percentage' => round($item / $total, 2)
-                    ];
-                })
-                ->values()
-                ->all();
-        } elseif ($content->type_id == Type::SIMPLE_TEXT) {
-           $details = $content->replyContents->pluck('answer')->countBy()
-               ->map(function ($item, $key) use ($total) {
-                   return [
-                       'name'       => $key,
-                       'count'      => $item,
-                       'percentage' => round($item / $total, 2)
-                   ];
-               })->values()->all();
-        }
-
-        return $details;
-    }
 }
