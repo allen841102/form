@@ -5,7 +5,7 @@
         <el-tab-pane label="統計結果" name="chart">
             統計結果
             <el-divider></el-divider>
-            <survey-chart></survey-chart>
+            <survey-chart :survey="survey"></survey-chart>
         </el-tab-pane>
         <el-tab-pane label="回覆明細" name="review">
             回覆明細
@@ -22,6 +22,10 @@
             tab: {
                 type: String,
                 required: false
+            },
+            survey: {
+                type: String,
+                required: true
             }
         },
         data() {

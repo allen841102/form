@@ -285,10 +285,11 @@ class SurveyController extends Controller
         foreach ($master->contents as $content) {
             $results[] = [
                 'name'    => $content->title,
+                'type_id' => $content->type_id,
                 'details' => $this->getDetails($content)
             ];
         }
-        return response()->json(['replydata'=>$results]);
+        return response()->json($results);
     }
 
     public function review($id)

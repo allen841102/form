@@ -5,14 +5,14 @@
                 <el-tag :class="Question.getClassName(table.type_id)" class="margin-bot" type="warning">
                     {{ Question.getTypeName(table.type_id)}}
                 </el-tag>
-                <span> {{ index+1 }}. {{ table.title }}</span>
-                <el-table :data="table.answers"
+                <span> {{ index+1 }}. {{ table.name }}</span>
+                <el-table :data="table.details"
                           border
                           style="width: 100%"
                           v-if="table.type_id !== 3">
                     <el-table-column
                             label="答案選項"
-                            prop="option"
+                            prop="name"
                             width="auto">
                     </el-table-column>
                     <el-table-column
@@ -22,15 +22,15 @@
                     </el-table-column>
                     <el-table-column
                             label="百分比"
-                            prop="ratio"
+                            prop="percentage"
                             width="100">
                     </el-table-column>
                 </el-table>
                 <div v-if="table.type_id ==3" class="answer-area">
                     <div>
                        <div :key="index"
-                             v-for="(answer, index) in table.answers">
-                            {{ answer.option }} ( {{answer.count}} )
+                             v-for="(answer, index) in table.details">
+                            {{ answer.name }} ( {{answer.count}} )
                        </div>
                     </div>
                 </div>
@@ -47,66 +47,33 @@
     import questionLib from '../../lib/question';
 
     export default {
+        props: {
+            survey: {
+                type: Object,
+                required: false
+            }
+        },
         data() {
             return {
                 Question: questionLib,
-                tableData: [
-                    {
-                        title: '請問你的學院',
-                        type_id: 1,
-                        answers: [
-                            {
-                                option: '文學院',
-                                count: '23',
-                                ratio: '38.2%'
-                            },
-                            {
-                                option: '理學院',
-                                count: '73',
-                                ratio: '61.8%'
-                            },
-                        ]
-                    },
-                    {
-                        title: '請問你的專長',
-                        type_id: 2,
-                        answers: [
-                            {
-                                option: '吃飯',
-                                count: '12',
-                                ratio: '38.2%'
-                            },
-                            {
-                                option: '睡覺',
-                                count: '20',
-                                ratio: '61.8%'
-                            },
-                            {
-                                option: '上網',
-                                count: '20',
-                                ratio: '61.8%'
-                            },
-                        ]
-                    },
-                    {
-                        title: '留下任何建議',
-                        type_id: 3,
-                        answers: [
-                            {
-                                option: '不知道',
-                                count: '12',
-                            },
-                            {
-                                option: '看電視',
-                                count: '20',
-                            },
-                            {
-                                option: '打桌球',
-                                count: '20',
-                            },
-                        ]
-                    }
-                ]
+                tableData: this.getSurveyChart(),
+            }
+        },
+        methods: {
+            getSurveyChart() {
+                self = this
+                console.log(self.survey)
+                axios.get('/admin/survey/'+ self.survey.id +'/chart')
+                    .then(function (response) {
+                        self.tableData = response.data
+                    })
+                    .catch(function (error, reason) {
+                        if (error.response) {
+                            alert(JSON.stringify(error.response))
+                        } else {
+                            alert(error)
+                        }
+                    })
             }
         }
     }

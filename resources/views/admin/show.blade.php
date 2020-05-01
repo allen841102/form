@@ -6,5 +6,5 @@
 @section('title', '建立問券')
 
 @section('content')
-    <survey-details tab="review"></survey-details>
+    <survey-details tab="chart" :survey="{{ $survey->toJson() }}"></survey-details>
 @endsection
