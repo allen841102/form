@@ -21,7 +21,6 @@ Auth::routes();
 //GET 登入後首頁
 Route::get('admin/dashboard', 'SurveyController@index')->name('dashboard');
 Route::prefix('admin/survey')
-     ->middleware('auth')
      ->group(function () {
          //GET 建立 Survey 頁面
          Route::get('create', 'SurveyController@create')
@@ -34,6 +33,12 @@ Route::prefix('admin/survey')
          Route::get('edit/{id}', 'SurveyController@edit');
          //PUT 更新 Survey 資料
          Route::put('{id}', 'SurveyController@update');
-
+         //DELETE 刪除Survey 資料
          Route::delete('{id}', 'SurveyController@destroy');
+         //GET 顯示 Survey 回覆資料(Chart)
+         Route::get('{id}/chart','SurveyController@chart');
+         //GET 顯示 Survey 回覆資料(Review)
+         Route::get('{id}/review','SurveyController@review');
+         //GET 顯示 Survey分享頁面(QR Code)
+         Route::get('{id}/share','SurveyController@share');
      });

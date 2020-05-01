@@ -24,7 +24,7 @@ class Content extends Model
         return $this->belongsTo(Type::class);
     }
 
-    public function replycontents()
+    public function replyContents()
     {
         return $this->hasMany(ReplyContent::class);
     }
