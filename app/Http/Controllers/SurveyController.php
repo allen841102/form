@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Answer;
 use App\Content;
+use App\Http\Resources\SurveyChart;
 use App\Master;
 use App\Type;
 use Carbon\Carbon;
@@ -36,9 +37,9 @@ class SurveyController extends Controller
                 'title'          => $list->name,
                 'created_at'     => $this->getDateTime($list->created_at),
                 'updated_at'     => $this->getDateTime($list->updated_at),
-                'question_count' => count($list->Contents),
+                'question_count' => $list->contents->count(),
                 'status'         => $list->status,
-                'response_count' => count($list->replymasters),
+                'response_count' => $list->replymasters->count(),
                 'response_time'  => $this->getDateTime($list->replymasters->max('updated_at')),
                 'view_link'      => '/admin/survey/' . $list->id,
                 'edit_link'      => '/admin/survey/edit/' . $list->id,
@@ -281,16 +282,8 @@ class SurveyController extends Controller
                         ->where('id', $id)
                         ->with('contents.replyContents', 'contents.answers')
                         ->first();
-        $results = [];
-        foreach ($master->contents as $content) {
-            $results[] = [
-                'name'    => $content->title,
-                'type_id' => $content->type_id,
-                'details' => $content->getDetails(),
-            ];
-        }
 
-        return response()->json($results);
+        return response()->json(SurveyChart::collection($master->contents));
     }
 
     public function review($id)
