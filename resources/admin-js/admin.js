@@ -8,6 +8,8 @@
 require('./bootstrap');
 window.Vue = require('vue');
 
+Vue.component('survey-review', require('./components/SurveyDetails/SurveyReview.vue').default);
+Vue.component('survey-chart', require('./components/SurveyDetails/SurveyChart.vue').default);
 Vue.component('survey-details', require('./components/SurveyDetails.vue').default);
 Vue.component('survey-creation', require('./components/SurveyCreation.vue').default);
 Vue.component('survey-table', require('./components/SurveyTable.vue').default);
