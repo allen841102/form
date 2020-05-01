@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Answer;
 use App\Content;
+use App\Http\Resources\SurveyChartResource;
+use App\Http\Resources\SurveyResource;
 use App\Master;
 use App\Type;
 use Carbon\Carbon;
@@ -27,25 +29,9 @@ class SurveyController extends Controller
     public function index()
     {
         $lists = Master::where('user_id', Auth::id())
-                       ->with('contents', 'replymasters')
+                       ->with('contents', 'replyMasters')
                        ->get();
-        $surveylist = [];
-        foreach ($lists as $list) {
-            $surveylist[] = [
-                'sequence'       => $list->id,
-                'title'          => $list->name,
-                'created_at'     => $this->getDateTime($list->created_at),
-                'updated_at'     => $this->getDateTime($list->updated_at),
-                'question_count' => count($list->Contents),
-                'status'         => $list->status,
-                'response_count' => count($list->replymasters),
-                'response_time'  => $this->getDateTime($list->replymasters->max('updated_at')),
-                'view_link'      => '/admin/survey/' . $list->id,
-                'edit_link'      => '/admin/survey/edit/' . $list->id,
-            ];
-        }
-
-        return view('admin.home', ['list' => json_encode($surveylist)]);
+        return view('admin.home', ['list' => SurveyResource::collection($lists)]);
     }
 
     /**
@@ -281,16 +267,8 @@ class SurveyController extends Controller
                         ->where('id', $id)
                         ->with('contents.replyContents', 'contents.answers')
                         ->first();
-        $results = [];
-        foreach ($master->contents as $content) {
-            $results[] = [
-                'name'    => $content->title,
-                'type_id' => $content->type_id,
-                'details' => $content->getDetails(),
-            ];
-        }
 
-        return response()->json($results);
+        return response()->json(SurveyChartResource::collection($master->contents));
     }
 
     public function review($id)
@@ -299,11 +277,6 @@ class SurveyController extends Controller
 
     public function share($id)
     {
-    }
-
-    private function getDateTime(?Carbon $time): string
-    {
-        return $time ? $time->format('Y-m-d H:i:s') : 'N/A';
     }
 
 }
