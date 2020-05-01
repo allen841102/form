@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Answer;
 use App\Content;
-use App\Http\Resources\SurveyChart;
+use App\Http\Resources\SurveyChartResource;
 use App\Master;
 use App\Type;
 use Carbon\Carbon;
@@ -283,7 +283,7 @@ class SurveyController extends Controller
                         ->with('contents.replyContents', 'contents.answers')
                         ->first();
 
-        return response()->json(SurveyChart::collection($master->contents));
+        return response()->json(SurveyChartResource::collection($master->contents));
     }
 
     public function review($id)
