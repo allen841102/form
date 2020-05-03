@@ -12,7 +12,11 @@
             <el-divider></el-divider>
             <survey-review></survey-review>
         </el-tab-pane>
-        <el-tab-pane label="問卷分享" name="share"></el-tab-pane>
+        <el-tab-pane label="問卷分享" name="share">
+            問卷分享
+            <el-divider></el-divider>
+            <survey-share></survey-share>
+        </el-tab-pane>
     </el-tabs>
 </template>
 <script>
