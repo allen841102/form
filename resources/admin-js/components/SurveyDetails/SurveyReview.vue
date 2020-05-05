@@ -60,41 +60,30 @@
                 if (rowIndex === 0) {
                     return 'color: #409EFF; font-weight: 500; border-bottom-width: 2px;'
                 }
+            },
+            getSurveyReview() {
+                self = this
+                axios.get('/admin/survey/'+ self.survey.id +'/review')
+                    .then(function (response) {
+                        self.tableData = response.data.data
+                        self.currentPage = response.data.current_page
+                        self.pageSize = response.data.per_page
+                        self.total = response.data.total
+                    })
+                    .catch(function (error, reason) {
+                        if (error.response) {
+                            alert(JSON.stringify(error.response))
+                        } else {
+                            alert(error)
+                        }
+                    })
             }
         },
         data() {
             return {
-                data: [
-                    {
-                        q1: ['123', 'bbb'],
-                        q2: ['456', '789'],
-                        created_at: '2020-03-21 12:32:45',
-                        ip: '123.231.231.231',
-                        response_time: 23,
-                    },
-                    {
-                        q1: ['123'],
-                        q2: ['456'],
-                        created_at: '2020-03-21 12:32:45',
-                        ip: '123.231.231.231',
-                        response_time: 103,
-                    },
-                ],
-                questions: [
-                    {
-                        title: '1. 昨天吃什麼',
-                        key: 'q1',
-                    },
-                    {
-                        title: '2. 今天吃什麼',
-                        key: 'q2',
-                    }
-                ],
-                currentPage: 3,
-                pageSize: 10,
-                total: 50,
+                tableData: {},
             }
-        }
+        },
     }
 </script>
 <style>

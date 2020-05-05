@@ -56,13 +56,15 @@
         data() {
             return {
                 Question: questionLib,
-                tableData: this.getSurveyChart(),
+                tableData: {},
             }
+        },
+        created() {
+            this.getSurveyChart()
         },
         methods: {
             getSurveyChart() {
                 self = this
-                console.log(self.survey)
                 axios.get('/admin/survey/'+ self.survey.id +'/chart')
                     .then(function (response) {
                         self.tableData = response.data
