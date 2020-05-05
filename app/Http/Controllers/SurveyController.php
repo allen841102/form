@@ -278,7 +278,7 @@ class SurveyController extends Controller
     public function chart($id)
     {
         $master = Master::where('user_id', Auth::id())
-                        ->where('id', $id)
+                        ->where('ixd', $id)
                         ->with('contents.replyContents', 'contents.answers')
                         ->first();
         $results = [];
