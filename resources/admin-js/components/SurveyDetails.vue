@@ -10,7 +10,9 @@
         <el-tab-pane label="回覆明細" name="review">
             回覆明細
             <el-divider></el-divider>
-            <survey-review :review="review" :survey="survey"></survey-review>
+            <survey-review :change-page="getSurveyReview"
+                           :review="review"
+                           :survey="survey"></survey-review>
         </el-tab-pane>
         <el-tab-pane label="問卷分享" name="share">
             問卷分享
@@ -40,7 +42,7 @@
         },
         created() {
             this.getSurveyChart()
-            this.getSurveyReview()
+            this.getSurveyReview(1)
         },
         methods: {
             handleClick(tab, event) {
@@ -49,7 +51,8 @@
             },
             getSurveyChart() {
                 let self = this
-                axios.get('/admin/survey/' + this.survey.id + '/chart')
+                const url = '/admin/survey/' + this.survey.id + '/chart'
+                axios.get(url)
                     .then(function (response) {
                         self.chart = response.data
                     })
@@ -61,9 +64,9 @@
                         }
                     })
             },
-            getSurveyReview() {
-                const self=this
-                axios.get('/admin/survey/' + this.survey.id + '/review')
+            getSurveyReview(page) {
+                const self = this
+                axios.get('/admin/survey/' + this.survey.id + '/review?page=' + page)
                     .then(function (response) {
                         self.review = response.data
                     })

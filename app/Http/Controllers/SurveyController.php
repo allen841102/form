@@ -300,8 +300,7 @@ class SurveyController extends Controller
                         ->where('id', $id)
                         ->with('replyMasters.replyContent', 'contents')
                         ->first();
-        $contents = $master->contents
-            ->all();
+        $contents = $master->contents->all();
         $questions = [];
         foreach ($contents as $content) {
             $questions[] = [
@@ -311,7 +310,7 @@ class SurveyController extends Controller
         }
 
         $replyMasters = $master->replyMasters()
-                               ->paginate(2);
+                               ->paginate(5);
 
         $data = [];
         foreach ($replyMasters as $replyMaster) {

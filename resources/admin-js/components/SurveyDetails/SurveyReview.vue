@@ -49,22 +49,18 @@
 
 <script>
     export default {
-        props: {
-            survey: {
-                type: Object,
-                required: false
-            },
-            review: {
-                type: Object,
-                required: true,
-            }
-        },
+        props: [
+                'survey',
+                'review',
+                'changePage',
+            ],
         methods: {
             handleSizeChange(val) {
                 //console.log(`${val} items per page`);
             },
             handleCurrentChange(val) {
-                //console.log(`current page: ${val}`);
+                console.log(`current page: ${val}`);
+                this.changePage(val);
             },
             tableHeaderColor({row, column, rowIndex, columnIndex}) {
                 if (rowIndex === 0) {
