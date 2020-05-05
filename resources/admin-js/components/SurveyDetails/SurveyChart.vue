@@ -1,6 +1,6 @@
 <template>
     <div class="result-table">
-        <el-row :key="index" v-for="(table, index) in tableData">
+        <el-row :key="index" v-for="(table, index) in chart">
             <el-col :span="16">
                 <el-tag :class="Question.getClassName(table.type_id)" class="margin-bot" type="warning">
                     {{ Question.getTypeName(table.type_id)}}
@@ -26,12 +26,12 @@
                             width="100">
                     </el-table-column>
                 </el-table>
-                <div v-if="table.type_id ==3" class="answer-area">
+                <div class="answer-area" v-if="table.type_id ==3">
                     <div>
-                       <div :key="index"
+                        <div :key="index"
                              v-for="(answer, index) in table.details">
                             {{ answer.name }} ( {{answer.count}} )
-                       </div>
+                        </div>
                     </div>
                 </div>
             </el-col>
@@ -51,39 +51,24 @@
             survey: {
                 type: Object,
                 required: false
+            },
+            chart:{
+                type: Array,
+                required: true
             }
         },
         data() {
             return {
                 Question: questionLib,
-                tableData: {},
             }
         },
-        created() {
-            this.getSurveyChart()
-        },
-        methods: {
-            getSurveyChart() {
-                self = this
-                axios.get('/admin/survey/'+ self.survey.id +'/chart')
-                    .then(function (response) {
-                        self.tableData = response.data
-                    })
-                    .catch(function (error, reason) {
-                        if (error.response) {
-                            alert(JSON.stringify(error.response))
-                        } else {
-                            alert(error)
-                        }
-                    })
-            }
-        }
     }
 </script>
 <style>
     .result-table {
         margin-top: 10px;
     }
+
     .question-hint {
         font-size: 12px;
         color: lightslategray;
@@ -91,6 +76,7 @@
         margin-left: auto;
         margin-right: 0;
     }
+
     .answer-area {
         overflow-y: auto;
         border: 1px dotted #d2d2d2;

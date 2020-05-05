@@ -315,10 +315,12 @@ class SurveyController extends Controller
 
         $data = [];
         foreach ($replyMasters as $replyMaster) {
-            $created_at = $replyMaster->created_at;
+            $created_at = $replyMaster->created_at->format('Y-m-d H:i:s');
 
             $key = [
-                'created_at' => $created_at
+                'created_at' => $created_at,
+                'ip'=>'123.123.123.123',
+                'response_time'=>25,
             ];
 
             foreach ($replyMaster->replyContent as $replyContents) {
@@ -346,7 +348,7 @@ class SurveyController extends Controller
         }
 
         $results = [
-            'date' => $data,
+            'data' => $data,
             'questions' => $questions,
             'per_page' => $replyMasters->perPage(),
             'current_page' => $replyMasters->currentPage(),
