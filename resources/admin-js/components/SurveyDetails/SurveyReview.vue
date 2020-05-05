@@ -64,7 +64,7 @@
         },
         data() {
             return {
-                tableData: [
+                data: [
                     {
                         q1: ['123', 'bbb'],
                         q2: ['456', '789'],
