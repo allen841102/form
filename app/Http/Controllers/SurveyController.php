@@ -311,7 +311,7 @@ class SurveyController extends Controller
         }
 
         $replyMasters = $master->replyMasters()
-                               ->paginate();
+                               ->paginate(2);
 
         $data = [];
         foreach ($replyMasters as $replyMaster) {
