@@ -3,7 +3,7 @@
         <div class="page-area">
             <el-pagination
                     :current-page.sync="review.current_page"
-                    :page-size="review.page_size"
+                    :page-size="review.per_page"
                     :total="review.total"
                     @current-change="handleCurrentChange"
                     @size-change="handleSizeChange"
@@ -37,7 +37,7 @@
         <div class="page-area">
             <el-pagination
                     :current-page.sync="review.current_page"
-                    :page-size="review.page_size"
+                    :page-size="review.per_page"
                     :total="review.total"
                     @current-change="handleCurrentChange"
                     @size-change="handleSizeChange"
@@ -73,7 +73,7 @@
             },
         },
         data() {
-            return { }
+            return {}
         },
     }
 </script>
