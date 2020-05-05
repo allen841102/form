@@ -315,11 +315,12 @@ class SurveyController extends Controller
         $data = [];
         foreach ($replyMasters as $replyMaster) {
             $created_at = $replyMaster->created_at->format('Y-m-d H:i:s');
-
+            $ip = '123.111.231.231';
+            $response_time = '103';
             $key = [
                 'created_at' => $created_at,
-                'ip'=>'123.123.123.123',
-                'response_time'=>25,
+                'ip' => $ip,
+                'response_time' => $response_time
             ];
 
             foreach ($replyMaster->replyContent as $replyContents) {
