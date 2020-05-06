@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SurveyController extends Controller
 {
@@ -300,8 +301,7 @@ class SurveyController extends Controller
                         ->where('id', $id)
                         ->with('replyMasters.replyContent', 'contents')
                         ->first();
-        $contents = $master->contents
-            ->all();
+        $contents = $master->contents->all();
         $questions = [];
         foreach ($contents as $content) {
             $questions[] = [
@@ -311,11 +311,11 @@ class SurveyController extends Controller
         }
 
         $replyMasters = $master->replyMasters()
-                               ->paginate();
+                               ->paginate(5);
 
         $data = [];
         foreach ($replyMasters as $replyMaster) {
-            $created_at = $replyMaster->created_at;
+            $created_at = $replyMaster->created_at->format('Y-m-d H:i:s');
             $ip = '123.111.231.231';
             $response_time = '103';
             $key = [
@@ -352,7 +352,7 @@ class SurveyController extends Controller
         }
 
         $results = [
-            'date' => $data,
+            'data' => $data,
             'questions' => $questions,
             'per_page' => $replyMasters->perPage(),
             'current_page' => $replyMasters->currentPage(),
@@ -364,6 +364,15 @@ class SurveyController extends Controller
 
     public function share($id)
     {
+        $url = route('show', ['id' => $id]);
+        $share = [
+            'qrcode' => base64_encode(QrCode::format('png')->size(100)->generate($url)),
+            'url' => $url
+        ];
+
+
+        return response()->json($share);
+
     }
 
     private function getDateTime(?Carbon $time): string
@@ -371,8 +380,4 @@ class SurveyController extends Controller
         return $time ? $time->format('Y-m-d H:i:s') : 'N/A';
     }
 
-    private function getDetail($replyMaster)
-    {
-        //$replyContent = $replyMaster->
-    }
 }

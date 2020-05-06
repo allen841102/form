@@ -13,7 +13,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('s/{id}', 'Frontend\SurveyController@show');
+Route::get('s/{id}', 'Frontend\SurveyController@show')->name('show');
 //使用者回覆survey
 Route::post('post', 'Frontend\SurveyController@post');
 //建立 authentication 註冊 登入 忘記密碼 等 routes
@@ -36,9 +36,9 @@ Route::prefix('admin/survey')
          //DELETE 刪除Survey 資料
          Route::delete('{id}', 'SurveyController@destroy');
          //GET 顯示 Survey 回覆資料(Chart)
-         Route::get('{id}/chart','SurveyController@chart');
+         Route::get('{id}/chart', 'SurveyController@chart');
          //GET 顯示 Survey 回覆資料(Review)
-         Route::get('{id}/review','SurveyController@review');
+         Route::get('{id}/review', 'SurveyController@review');
          //GET 顯示 Survey分享頁面(QR Code)
-         Route::get('{id}/share','SurveyController@share');
+         Route::get('{id}/share', 'SurveyController@share');
      });

@@ -2,16 +2,16 @@
     <div>
         <div class="page-area">
             <el-pagination
-                    :current-page.sync="currentPage"
-                    :page-size="pageSize"
-                    :total="total"
+                    :current-page.sync="review.current_page"
+                    :page-size="review.per_page"
+                    :total="review.total"
                     @current-change="handleCurrentChange"
                     @size-change="handleSizeChange"
                     layout="total, prev, pager, next">
             </el-pagination>
         </div>
         <el-table
-                :data="tableData"
+                :data="review.data"
                 :header-cell-style="tableHeaderColor"
                 border
                 style="width: 100%">
@@ -21,8 +21,8 @@
             <!--            </el-table-column>-->
             <el-table-column :key="value.key"
                              :label="value.title"
-                             :prop="value.key"
-                             v-for="value in questions">
+                             :prop="value.key.toString()"
+                             v-for="value in review.questions">
                 <template slot-scope="scope">
                     <span class="answer-text" v-for="text in scope.row[value.key]">{{ text }}</span>
                 </template>
@@ -36,9 +36,9 @@
         </el-table>
         <div class="page-area">
             <el-pagination
-                    :current-page.sync="currentPage"
-                    :page-size="pageSize"
-                    :total="total"
+                    :current-page.sync="review.current_page"
+                    :page-size="review.per_page"
+                    :total="review.total"
                     @current-change="handleCurrentChange"
                     @size-change="handleSizeChange"
                     layout="total, prev, pager, next">
@@ -49,52 +49,28 @@
 
 <script>
     export default {
+        props: [
+                'survey',
+                'review',
+                'changePage',
+            ],
         methods: {
             handleSizeChange(val) {
-                console.log(`${val} items per page`);
+                //console.log(`${val} items per page`);
             },
             handleCurrentChange(val) {
                 console.log(`current page: ${val}`);
+                this.changePage(val);
             },
             tableHeaderColor({row, column, rowIndex, columnIndex}) {
                 if (rowIndex === 0) {
                     return 'color: #409EFF; font-weight: 500; border-bottom-width: 2px;'
                 }
-            }
+            },
         },
         data() {
-            return {
-                data: [
-                    {
-                        q1: ['123', 'bbb'],
-                        q2: ['456', '789'],
-                        created_at: '2020-03-21 12:32:45',
-                        ip: '123.231.231.231',
-                        response_time: 23,
-                    },
-                    {
-                        q1: ['123'],
-                        q2: ['456'],
-                        created_at: '2020-03-21 12:32:45',
-                        ip: '123.231.231.231',
-                        response_time: 103,
-                    },
-                ],
-                questions: [
-                    {
-                        title: '1. 昨天吃什麼',
-                        key: 'q1',
-                    },
-                    {
-                        title: '2. 今天吃什麼',
-                        key: 'q2',
-                    }
-                ],
-                currentPage: 3,
-                pageSize: 10,
-                total: 50,
-            }
-        }
+            return {}
+        },
     }
 </script>
 <style>
