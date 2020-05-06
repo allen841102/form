@@ -12,7 +12,7 @@
                               v-for="(question, index) in result.questions">
 
                     <span slot="label">
-                    <span class="question-title">{{(index + 1 + '. ').toString().concat(question.name)}}</span>
+                    <span class="question-title">{{(index + 1 + '. ').toString().concat(question.title)}}</span>
                     <i :class="getClassName(question.type)" class="question-type" type="warning"
                        v-if="question.type===2">
                         {{ getTypeName(question.type)}}
