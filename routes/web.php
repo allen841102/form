@@ -25,7 +25,7 @@ Route::prefix('admin/survey')
          //GET 建立 Survey 頁面
          Route::get('create', 'SurveyController@create')
               ->name('survey.create');
-
+         //GET 取得近期回覆Survey
          Route::get('history', 'SurveyController@history');
          //POST 建立 Survey 資料
          Route::post('create', 'SurveyController@store');

@@ -24,15 +24,10 @@
         <el-menu :default-openeds="['1']">
             <el-submenu index="1">
                 <template slot="title"><i class="el-icon-menu"></i>問券總覽</template>
-                <a class="survey-link" href="/admin/survey/1">
+                <a v-for="value in historyList" class="survey-link" :href="value.url">
                     <el-menu-item index="1-1">
-                        <div class="first-letter">飲</div>
-                        <span class="survey-name">飲食習慣研究</span></el-menu-item>
-                </a>
-                <a class="survey-link" href="/admin/survey/2">
-                    <el-menu-item index="1-2">
-                        <div class="first-letter">大</div>
-                        <span class="survey-name">大學生打工調查</span></el-menu-item>
+                        <div class="first-letter">{{value.name.charAt(0)}}</div>
+                        <span class="survey-name">{{value.name}}</span></el-menu-item>
                 </a>
             </el-submenu>
             <el-menu-item index="2">
@@ -58,8 +53,33 @@
             username: {
                 type: String,
                 required: true
-            }
+            },
         },
+        data() {
+            return {
+                historyList: []
+            };
+        },
+        created() {
+            this.getHistoryList()
+        },
+        methods: {
+            getHistoryList() {
+                const self = this
+                axios.get('/admin/survey/history')
+                    .then(function (response) {
+                        self.historyList = response.data
+                    })
+                    .catch(function (error, reason) {
+                        if (error.response) {
+                            alert(JSON.stringify(error.response))
+                        } else {
+                            alert(error)
+                        }
+                    })
+
+            }
+        }
     }
 </script>
 
@@ -78,6 +98,7 @@
         border-top: 1px solid lightgray;
         border-bottom: 1px solid lightgray;
     }
+
     /*.el-main {*/
     /*    border-left: 1px solid lightgray;*/
     /*}*/
@@ -137,6 +158,7 @@
     .survey-link {
         text-decoration: none;
     }
+
     .el-menu {
         border-right: none;
     }
