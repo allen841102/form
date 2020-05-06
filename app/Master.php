@@ -25,4 +25,9 @@ class Master extends Model
     {
         return $this->hasMany(ReplyMaster::class);
     }
+
+    public function lastReply()
+    {
+        return $this->hasOne(ReplyMaster::class)->orderBy('created_at', 'desc');
+    }
 }

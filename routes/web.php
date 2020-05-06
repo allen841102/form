@@ -25,10 +25,12 @@ Route::prefix('admin/survey')
          //GET 建立 Survey 頁面
          Route::get('create', 'SurveyController@create')
               ->name('survey.create');
+
+         Route::get('history', 'SurveyController@history');
          //POST 建立 Survey 資料
          Route::post('create', 'SurveyController@store');
          //GET 顯示 Survey details
-         Route::get('{id}', 'SurveyController@show');
+         Route::get('{id}', 'SurveyController@show')->name('survey');
          //GET 顯示 Survey 編輯資料
          Route::get('edit/{id}', 'SurveyController@edit');
          //PUT 更新 Survey 資料
@@ -41,4 +43,6 @@ Route::prefix('admin/survey')
          Route::get('{id}/review', 'SurveyController@review');
          //GET 顯示 Survey分享頁面(QR Code)
          Route::get('{id}/share', 'SurveyController@share');
+
+
      });

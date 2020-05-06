@@ -375,6 +375,27 @@ class SurveyController extends Controller
 
     }
 
+    public function history()
+    {
+        $masters = Master::where('user_id', Auth::id())
+                         ->whereHas('lastReply')
+                         ->with('lastReply')
+                         ->get();
+
+        $sorted = $masters->sortByDesc(function ($master) {
+            return $master->lastReply->created_at;
+        })
+                          ->take(5)
+                          ->map(function ($item) {
+                              return [
+                                  'name' => $item->name,
+                                  'url' => route('survey', ['id' => $item->id])
+                              ];
+                          });
+        return response()->json($sorted);
+
+    }
+
     private function getDateTime(?Carbon $time): string
     {
         return $time ? $time->format('Y-m-d H:i:s') : 'N/A';
