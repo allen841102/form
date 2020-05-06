@@ -15,14 +15,10 @@
                 :header-cell-style="tableHeaderColor"
                 border
                 style="width: 100%">
-            <!--            <el-table-column-->
-            <!--                    type="selection"-->
-            <!--                    width="55">-->
-            <!--            </el-table-column>-->
             <el-table-column :key="value.key"
-                             :label="value.title"
+                             :label="(index + 1).toString() + '. ' + value.title"
                              :prop="value.key.toString()"
-                             v-for="value in review.questions">
+                             v-for="(value, index) in review.questions">
                 <template slot-scope="scope">
                     <span class="answer-text" v-for="text in scope.row[value.key]">{{ text }}</span>
                 </template>
@@ -50,10 +46,10 @@
 <script>
     export default {
         props: [
-                'survey',
-                'review',
-                'changePage',
-            ],
+            'survey',
+            'review',
+            'changePage',
+        ],
         methods: {
             handleSizeChange(val) {
                 //console.log(`${val} items per page`);

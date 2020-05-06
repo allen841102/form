@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="share-row">
-            分享網址: <a class="share-url" :href="url">{{ url }}</a>
+            分享網址: <a class="share-url" :href="url" target="_blank">{{ url }}</a>
         </div>
         <div class="share-row">
             <span>QR Code: </span>
