@@ -76,6 +76,7 @@
             return {
                 done: false,
                 fullScreenLoading: false,
+                startTime: null,
                 result: {
                     questions: []
                 },
@@ -110,6 +111,8 @@
 
                 this.result.questions.push({title, id, type: type_id, answers, answer})
             })
+            const dateTime = Date.now();
+            this.startTime = Math.floor(dateTime / 1000);
             console.log(this.result)
         },
         computed: {
@@ -138,6 +141,7 @@
             onSubmit() {
                 let finalResult = {
                     master_id: this.survey.id,
+                    start_time: this.startTime,
                     reply_contents: []
                 }
                 this.fullScreenLoading = true
