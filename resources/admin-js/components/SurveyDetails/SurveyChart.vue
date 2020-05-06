@@ -36,7 +36,7 @@
                 </div>
             </el-col>
             <el-col :span="8">
-                <span class="question-hint"> 填答人數 20 / 30 </span>
+                <span class="question-hint"> 填答人數 {{ table.answered }} / {{ totalReply }} </span>
             </el-col>
         </el-row>
 
@@ -54,6 +54,10 @@
             },
             chart:{
                 type: Array,
+                required: true
+            },
+            totalReply: {
+                type: String,
                 required: true
             }
         },

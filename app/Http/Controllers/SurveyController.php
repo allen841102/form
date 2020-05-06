@@ -267,9 +267,10 @@ class SurveyController extends Controller
     {
         $master = Master::where('user_id', Auth::id())
                         ->where('id', $id)
-                        ->with('contents.replyContents', 'contents.answers')
+                        ->with('contents.replyContents')
                         ->first();
-        return response()->json(SurveyChartResource::collection($master->contents));
+        return response()->json(['chart'=>SurveyChartResource::collection($master->contents),
+                                 'total'=>$master->replyMasters()->count()]);
     }
 
     public function review($id, Request $request)

@@ -146,6 +146,9 @@
                 }
                 this.fullScreenLoading = true
                 this.result.questions.forEach((question, index) => {
+                    if(question.answer.length == 0) {
+                       return
+                    }
                     let answer;
                     if (question.type === 1) {
                         answer = {'id': question.answer}

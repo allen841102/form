@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Content extends Model
 {
-    protected $table = 'content';
     protected $guarded = [];
-
-
+    protected $table = 'content';
 
     public function answers()
     {
@@ -42,15 +40,16 @@ class Content extends Model
         if ($typeId == Type::CHOICES) {
             $details = $details->flatten();
         }
-       return $details->countBy()
-                ->map(function ($item, $key) use ($total, $typeId) {
-                    return [
-                        'name'       => $typeId == Type::SIMPLE_TEXT ? $key : Answer::find($key)->text,
-                        'count'      => $item,
-                        'percentage' => round($item / $total, 2) * 100 . '%'
-                    ];
-                })
-                ->values()
-                ->all();
+
+        return $details->countBy()
+                       ->map(function ($item, $key) use ($total, $typeId) {
+                           return [
+                               'name'       => $typeId == Type::SIMPLE_TEXT ? $key : Answer::find($key)->text,
+                               'count'      => $item,
+                               'percentage' => round($item / $total, 2) * 100 . '%'
+                           ];
+                       })
+                       ->values()
+                       ->all();
     }
 }
