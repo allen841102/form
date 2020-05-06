@@ -47,7 +47,7 @@ class Content extends Model
                     return [
                         'name'       => $typeId == Type::SIMPLE_TEXT ? $key : Answer::find($key)->text,
                         'count'      => $item,
-                        'percentage' => round($item / $total, 2)
+                        'percentage' => round($item / $total, 2) * 100 . '%'
                     ];
                 })
                 ->values()
