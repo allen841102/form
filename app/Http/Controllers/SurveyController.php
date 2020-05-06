@@ -295,7 +295,7 @@ class SurveyController extends Controller
         return response()->json($results);
     }
 
-    public function review($id)
+    public function review($id, Request $request)
     {
         $master = Master::where('user_id', Auth::id())
                         ->where('id', $id)
@@ -311,7 +311,7 @@ class SurveyController extends Controller
         }
 
         $replyMasters = $master->replyMasters()
-                               ->paginate(5);
+                               ->paginate($request->input('per_page', 5));
 
         $data = [];
         foreach ($replyMasters as $replyMaster) {
