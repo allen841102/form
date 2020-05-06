@@ -329,21 +329,24 @@ class SurveyController extends Controller
                 $answers = $replyContents->answer;
                 if (array_key_exists('ids', $answers)) {
                     $key[$id] = reset($answers);
+
                 } else {
                     $key[$id] = reset($answers);
                     $key[$id] = (array)$key[$id];
                 }
                 if (array_key_exists('text', $answers) == false) {
-
                     foreach ($key[$id] as $idx => $value) {
                         $answerName = Answer::where('id', $value)
                                             ->first();
+
                         $key[$id][$idx] = $answerName ? $answerName->text : 'NA';
+
                     }
 
                 }
 
             }
+
             $data[] = $key;
 
         }
