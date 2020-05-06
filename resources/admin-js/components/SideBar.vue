@@ -14,12 +14,16 @@
                 <i class="el-icon-caret-bottom"/>
             </div>
             <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>個人檔案</el-dropdown-item>
-                <el-dropdown-item>收據管理</el-dropdown-item>
-                <el-dropdown-item>優惠碼</el-dropdown-item>
+                <el-dropdown-item disabled>個人檔案</el-dropdown-item>
                 <el-dropdown-item disabled>測試功能</el-dropdown-item>
-                <el-dropdown-item divided>登出</el-dropdown-item>
+                <a href="/logout"
+                   style="text-decoration: none;"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <el-dropdown-item>登出</el-dropdown-item>
+                </a>
             </el-dropdown-menu>
+            <form id="logout-form" action="/logout" method="POST" style="display: none;">
+            </form>
         </el-dropdown>
         <el-menu :default-openeds="['1']">
             <el-submenu index="1">
