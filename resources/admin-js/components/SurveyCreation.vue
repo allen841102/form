@@ -7,13 +7,13 @@
                     <el-col :span="22">
                         <el-divider content-position="left">基本設定</el-divider>
                         <el-form
-                                :model="survey"
-                                :rules="rules"
-                                class="demo-ruleForm"
-                                label-position="left"
-                                label-width="120px"
-                                ref="ruleForm"
-                                status-icon>
+                            :model="survey"
+                            :rules="rules"
+                            class="demo-ruleForm"
+                            label-position="left"
+                            label-width="120px"
+                            ref="ruleForm"
+                            status-icon>
                             <el-form-item label="主題" prop="name">
                                 <el-input clearable
                                           maxlength="50"
@@ -113,16 +113,16 @@
                 <div class="grid-content">
                     新增題目類型，拖曳至左方題目設定
                     <draggable
-                            :clone="cloneQuestion"
-                            :group="{ name: 'question-list', pull: 'clone', put: false }"
-                            :list="questionOptions"
-                            class="dragArea list-group"
+                        :clone="cloneQuestion"
+                        :group="{ name: 'question-list', pull: 'clone', put: false }"
+                        :list="questionOptions"
+                        class="dragArea list-group"
                     >
                         <el-button
-                                :icon="option.icon"
-                                :key="option.type"
-                                class="question-option"
-                                v-for="option in questionOptions">{{option.text}}
+                            :icon="option.icon"
+                            :key="option.type"
+                            class="question-option"
+                            v-for="option in questionOptions">{{option.text}}
                         </el-button>
                     </draggable>
                 </div>
@@ -134,6 +134,7 @@
 <script>
     import draggable from 'vuedraggable';
     import axios from 'axios';
+
     export default {
         props: {
             userSurvey: {
@@ -228,7 +229,7 @@
             createSurvey() {
                 axios.post('/admin/survey/create', this.survey)
                     .then(function (response) {
-                        alert('建立成功 ' + JSON.stringify(response.data))
+                        alert('建立成功 ')
                         window.location.href = response.data.url
                     })
                     .catch(function (error, reason) {
@@ -242,8 +243,8 @@
             updateSurvey() {
                 axios.put('/admin/survey/' + this.userSurvey.id, this.survey)
                     .then(function (response) {
-                        alert('更新成功 ' + JSON.stringify(response.data))
-                        window.location.reload()
+                        alert('更新成功 ')
+                        window.location.href = response.data.url
                     })
                     .catch(function (error, reason) {
                         if (error.response) {
