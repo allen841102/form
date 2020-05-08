@@ -23,6 +23,7 @@
                 </a>
             </el-dropdown-menu>
             <form id="logout-form" action="/logout" method="POST" style="display: none;">
+                <input type="hidden" name="_token" :value="csrfToken">
             </form>
         </el-dropdown>
         <el-menu :default-openeds="['1']">
@@ -46,6 +47,10 @@
 <script>
     export default {
         props: {
+            csrfToken: {
+                type: String,
+                required: true,
+            },
             creationLink: {
                 type: String,
                 required: true
