@@ -267,9 +267,10 @@ class SurveyController extends Controller
     {
         $master = Master::where('user_id', Auth::id())
                         ->where('id', $id)
-                        ->with('contents.replyContents', 'contents.answers')
+                        ->with('contents.replyContents')
                         ->first();
-        return response()->json(SurveyChartResource::collection($master->contents));
+        return response()->json(['chart'=>SurveyChartResource::collection($master->contents),
+                                 'total'=>$master->replyMasters()->count()]);
     }
 
     public function review($id, Request $request)
@@ -288,35 +289,33 @@ class SurveyController extends Controller
         }
 
         $replyMasters = $master->replyMasters()
+                               ->orderBy('created_at', 'desc')
                                ->paginate($request->input('per_page', 5));
 
         $data = [];
         foreach ($replyMasters as $replyMaster) {
-            $created_at = $replyMaster->created_at->format('Y-m-d H:i:s');
-            $ip = '123.111.231.231';
-            $response_time = '103';
-            $key = [
-                'created_at' => $created_at,
-                'ip' => $ip,
-                'response_time' => $response_time
+            $result = [
+                'created_at' => $replyMaster->created_at->format('Y-m-d H:i:s'),
+                'ip' => $replyMaster->client_ip,
+                'response_time' => $replyMaster->response_time
             ];
 
             foreach ($replyMaster->replyContent as $replyContents) {
                 $id = $replyContents->content_id;
                 $answers = $replyContents->answer;
                 if (array_key_exists('ids', $answers)) {
-                    $key[$id] = reset($answers);
+                    $result[$id] = reset($answers);
 
                 } else {
-                    $key[$id] = reset($answers);
-                    $key[$id] = (array)$key[$id];
+                    $result[$id] = reset($answers);
+                    $result[$id] = (array)$result[$id];
                 }
                 if (array_key_exists('text', $answers) == false) {
-                    foreach ($key[$id] as $idx => $value) {
+                    foreach ($result[$id] as $idx => $value) {
                         $answerName = Answer::where('id', $value)
                                             ->first();
 
-                        $key[$id][$idx] = $answerName ? $answerName->text : 'NA';
+                        $result[$id][$idx] = $answerName ? $answerName->text : 'NA';
 
                     }
 
@@ -324,7 +323,7 @@ class SurveyController extends Controller
 
             }
 
-            $data[] = $key;
+            $data[] = $result;
 
         }
 

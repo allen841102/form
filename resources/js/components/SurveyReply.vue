@@ -12,7 +12,7 @@
                               v-for="(question, index) in result.questions">
 
                     <span slot="label">
-                    <span class="question-title">{{(index + 1 + '. ').toString().concat(question.name)}}</span>
+                    <span class="question-title">{{(index + 1 + '. ').toString().concat(question.title)}}</span>
                     <i :class="getClassName(question.type)" class="question-type" type="warning"
                        v-if="question.type===2">
                         {{ getTypeName(question.type)}}
@@ -76,6 +76,7 @@
             return {
                 done: false,
                 fullScreenLoading: false,
+                startTime: null,
                 result: {
                     questions: []
                 },
@@ -110,6 +111,8 @@
 
                 this.result.questions.push({title, id, type: type_id, answers, answer})
             })
+            const dateTime = Date.now();
+            this.startTime = Math.floor(dateTime / 1000);
             console.log(this.result)
         },
         computed: {
@@ -138,10 +141,14 @@
             onSubmit() {
                 let finalResult = {
                     master_id: this.survey.id,
+                    start_time: this.startTime,
                     reply_contents: []
                 }
                 this.fullScreenLoading = true
                 this.result.questions.forEach((question, index) => {
+                    if(question.answer.length == 0) {
+                       return
+                    }
                     let answer;
                     if (question.type === 1) {
                         answer = {'id': question.answer}

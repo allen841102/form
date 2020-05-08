@@ -8,7 +8,7 @@
         <el-dropdown trigger="click">
             <div class="user-info">
                 <span>
-                <img class="user-avatar" src="/images/portait.png">
+                <img class="user-avatar" src="/images/portait.svg">
                 </span>
                 <span class="username">{{ username }}</span>
                 <i class="el-icon-caret-bottom"/>

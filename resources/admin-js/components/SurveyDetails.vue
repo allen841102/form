@@ -3,12 +3,14 @@
              type="border-card"
              v-model="activeName">
         <el-tab-pane label="統計結果" name="chart">
-            統計結果
+            統計結果 {{ totalReply }} 筆
             <el-divider></el-divider>
-            <survey-chart :chart="chart" :survey="survey"></survey-chart>
+            <survey-chart :chart="chart"
+                          :total-reply="totalReply"
+                          :survey="survey"></survey-chart>
         </el-tab-pane>
         <el-tab-pane label="回覆明細" name="review">
-            回覆明細
+            回覆明細 {{ totalReply }} 筆
             <el-divider></el-divider>
             <survey-review :change-page="getSurveyReview"
                            :review="review"
@@ -38,6 +40,7 @@
         data() {
             return {
                 activeName: this.tab || 'chart',
+                totalReply: '',
                 chart: [],
                 review: {},
                 share: {url: '', qrcode: ''}
@@ -58,7 +61,8 @@
                 const url = '/admin/survey/' + this.survey.id + '/chart'
                 axios.get(url)
                     .then(function (response) {
-                        self.chart = response.data
+                        self.chart = response.data.chart
+                        self.totalReply = response.data.total
                     })
                     .catch(function (error, reason) {
                         if (error.response) {
